@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-headline: "Manrope", sans-serif;
+  
+  --color-primary: #000f22;
+  --color-primary-container: #0a2540;
+  --color-secondary: #006e0c;
+  --color-secondary-container: #49fd48;
+  --color-on-secondary-container: #00710d;
+  --color-surface: #fbf9f8;
+  --color-surface-container-low: #f5f3f3;
+  --color-surface-container: #f0eded;
+  --color-surface-container-high: #eae8e7;
+  --color-surface-container-highest: #e4e2e1;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #1b1c1c;
+  --color-on-surface-variant: #43474d;
+  --color-outline-variant: #c4c6ce;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-secondary-fixed: #75ff69;
+  --color-secondary-fixed-dim: #25e531;
+  --color-primary-fixed-dim: #b0c8eb;
+  --color-surface-tint: #49607e;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+  
+  .glass-panel {
+    background: rgba(251, 249, 248, 0.7);
+    backdrop-filter: blur(12px);
+  }
+}
