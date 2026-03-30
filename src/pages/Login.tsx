@@ -13,7 +13,7 @@ export function Login() {
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
       {/* Left Column: Editorial Brand Imagery */}
-      <section className="relative w-full md:w-1/2 lg:w-3/5 min-h-[400px] md:min-h-screen overflow-hidden bg-primary">
+      <section className="relative w-full md:w-1/2 lg:w-3/5 min-h-100 md:min-h-screen overflow-hidden bg-primary">
         <div className="absolute inset-0 z-0">
           <img 
             alt="Dakar Architecture" 
@@ -21,7 +21,7 @@ export function Login() {
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ8ROSyK9jW7QGyRvhCtHoAT6dV1yTUlU8yIeNNhX28l2uTuypuXsMYt3Yj2bf87ZT4N9lXmg4jgBQ4M4IekgbXwPYRCSqQty0KoeTD4Su6J-hzpiNHg_omhTUSbjwTJD60R_azOIQX3Z30pJSYTddvkGX8FOINuSjCO7Mgy7vjJ3bD6XFA5TXy8M9J_6uz0Vr-C-sgwaTuIwEZzo3tRONlwz4y4RAyvTXHlpA-WIrofpXvi4Faz3w6FUI8xvbz803sUeZ2fmU1cjp"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-tr from-primary via-primary/80 to-transparent"></div>
         </div>
         
         <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-16 lg:p-24">

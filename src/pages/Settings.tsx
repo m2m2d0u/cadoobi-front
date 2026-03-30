@@ -30,7 +30,7 @@ export function Settings() {
           <SettingNavSection title={t('settings.nav.developer')} label={t('settings.nav.api')} />
         </nav>
 
-        <div className="flex-grow space-y-16 w-full">
+        <div className="grow space-y-16 w-full">
           {/* General Branding */}
           <section className="bg-surface-container-lowest p-6 lg:p-10 rounded-xl shadow-sm">
             <div className="flex justify-between items-start mb-10">
@@ -138,7 +138,7 @@ export function Settings() {
               <div className="space-y-2">
                 <label className="block text-sm font-semibold text-on-surface">{t('settings.api.webhook')}</label>
                 <div className="flex gap-2">
-                  <input className="flex-grow bg-surface-container-highest border-none p-3 rounded-lg" type="url" defaultValue="https://api.merchant-core.com/webhooks/cadoobi"/>
+                  <input className="grow bg-surface-container-highest border-none p-3 rounded-lg" type="url" defaultValue="https://api.merchant-core.com/webhooks/cadoobi"/>
                   <button className="bg-surface-container-highest p-3 rounded-lg hover:bg-surface-container-high transition-all">
                     <RefreshCw className="w-5 h-5 text-primary" />
                   </button>

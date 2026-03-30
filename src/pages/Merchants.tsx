@@ -90,7 +90,7 @@ export function Merchants() {
           </div>
 
           {/* Content */}
-          <div className="flex-grow p-8">
+          <div className="grow p-8">
             <div className="flex justify-end mb-4">
               <button
                 onClick={() => setIsRegisterModalOpen(false)}
@@ -224,12 +224,12 @@ export function Merchants() {
                 <div className="pt-6 flex gap-4">
                   <button
                     onClick={() => setCurrentStep(1)}
-                    className="flex-grow py-4 rounded-xl font-bold text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center justify-center gap-2"
+                    className="grow py-4 rounded-xl font-bold text-on-surface-variant hover:bg-surface-container-high transition-all flex items-center justify-center gap-2"
                   >
                     <ChevronLeft className="w-4 h-4" />
                     {t('common.back')}
                   </button>
-                  <button className="flex-[2] bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+                  <button className="flex-2 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
                     {t('merchants.modal.register')}
                   </button>
                 </div>
@@ -271,7 +271,7 @@ export function Merchants() {
             value={searchQuery}
             onChange={setSearchQuery}
             placeholder={t('merchants.filter.search')}
-            className="flex-grow"
+            className="grow"
           />
           <select
             value={categoryFilter}

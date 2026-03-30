@@ -153,7 +153,7 @@ export function Operators() {
             {Array.from({ length: 48 }).map((_, i) => (
               <div
                 key={i}
-                className="flex-grow bg-primary/20 hover:bg-primary transition-colors rounded-t-sm"
+                className="grow bg-primary/20 hover:bg-primary transition-colors rounded-t-sm"
                 style={{ height: `${Math.random() * 80 + 20}%` }}
               />
             ))}

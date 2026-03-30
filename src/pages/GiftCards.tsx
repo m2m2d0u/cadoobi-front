@@ -73,12 +73,12 @@ export function GiftCards() {
 
       <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm">
         <div className="p-4 border-b border-outline-variant/10 flex flex-wrap gap-4 items-center justify-between">
-          <div className="flex gap-4 flex-grow max-w-2xl">
+          <div className="flex gap-4 grow max-w-2xl">
             <SearchInput
               value=""
               onChange={() => {}}
               placeholder={t('giftcards.search.placeholder')}
-              className="flex-grow"
+              className="grow"
             />
             <button className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-lg text-sm font-bold text-primary">
               <Filter className="w-4 h-4" />

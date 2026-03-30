@@ -106,7 +106,7 @@ export function Users() {
           <div className="mt-10 space-y-4">
             <button className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
               {t('users.modal.sendInvitation')}
-              <Send className="w-4 h-4 rotate-[-45deg]" />
+              <Send className="w-4 h-4 -rotate-45" />
             </button>
             <button
               onClick={() => setIsInviteModalOpen(false)}
@@ -148,7 +148,7 @@ export function Users() {
             value=""
             onChange={() => {}}
             placeholder={t('users.search.placeholder')}
-            className="flex-grow"
+            className="grow"
           />
           <select className="bg-surface-container-high border-none rounded-lg text-sm px-4 py-2 font-bold text-primary">
             <option>{t('users.filter.allRoles')}</option>
