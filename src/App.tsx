@@ -7,6 +7,8 @@ import { Merchants } from './pages/Merchants';
 import { Operators } from './pages/Operators';
 import { GiftCards } from './pages/GiftCards';
 import { Users } from './pages/Users';
+import { Roles } from './pages/Roles';
+import { Permissions } from './pages/Permissions';
 import { Reports } from './pages/Reports';
 import { Settings } from './pages/Settings';
 import { Profile } from './pages/Profile';
@@ -25,6 +27,8 @@ function App() {
           <Route path="/operators" element={<Operators />} />
           <Route path="/gift-cards" element={<GiftCards />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/roles" element={<Roles />} />
+          <Route path="/permissions" element={<Permissions />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />

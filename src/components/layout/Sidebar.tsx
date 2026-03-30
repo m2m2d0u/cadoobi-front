@@ -28,6 +28,8 @@ export function Sidebar() {
     { icon: Tower, label: t('nav.operators'), path: '/operators' },
     { icon: Gift, label: t('nav.giftCards'), path: '/gift-cards' },
     { icon: Users, label: t('nav.users'), path: '/users' },
+    { icon: ShieldCheck, label: t('nav.roles'), path: '/roles' },
+    { icon: UserCheck, label: t('nav.permissions'), path: '/permissions' },
     { icon: BarChart3, label: t('nav.reports'), path: '/reports' },
     { icon: Settings, label: t('nav.settings'), path: '/settings' },
   ];
