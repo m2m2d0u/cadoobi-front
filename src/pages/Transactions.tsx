@@ -1,14 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Download, 
-  Plus, 
-  Search, 
-  Filter, 
-  ChevronRight, 
+import {
+  Download,
+  Plus,
+  Filter,
+  ChevronRight,
   ChevronLeft,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
   Eye,
   Copy,
   ReceiptText,
@@ -16,44 +12,14 @@ import {
 } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
+import { Button, IconButton, PageHeader, SearchInput, StatusBadge } from '../components/ui';
+import type { StatusType } from '../components/ui';
 
 const initialTransactions = [
-  { 
-    ref: '#TXN-8829104', 
-    merchant: 'Boulangerie Sunu', 
-    phone: '+221 77 402 11 92', 
-    amount: '25,500.00', 
-    operator: 'Orange Money', 
-    status: 'Success', 
-    time: 'Oct 24, 2023 • 14:32' 
-  },
-  { 
-    ref: '#TXN-8829105', 
-    merchant: 'Supermarché Malik', 
-    phone: '+221 76 550 44 21', 
-    amount: '120,000.00', 
-    operator: 'Wave', 
-    status: 'Pending', 
-    time: 'Oct 24, 2023 • 14:15' 
-  },
-  { 
-    ref: '#TXN-8829106', 
-    merchant: 'Pharmacie Thiaroye', 
-    phone: '+221 78 123 99 00', 
-    amount: '8,450.00', 
-    operator: 'Free Money', 
-    status: 'Failed', 
-    time: 'Oct 24, 2023 • 13:58' 
-  },
-  { 
-    ref: '#TXN-8829107', 
-    merchant: 'Tigo Logistics', 
-    phone: '+221 70 888 22 11', 
-    amount: '45,000.00', 
-    operator: 'E-Money', 
-    status: 'Success', 
-    time: 'Oct 24, 2023 • 12:44' 
-  },
+  { ref: '#TXN-8829104', merchant: 'Boulangerie Sunu', phone: '+221 77 402 11 92', amount: '25,500.00', operator: 'Orange Money', status: 'Success', time: 'Oct 24, 2023 • 14:32' },
+  { ref: '#TXN-8829105', merchant: 'Supermarché Malik', phone: '+221 76 550 44 21', amount: '120,000.00', operator: 'Wave', status: 'Pending', time: 'Oct 24, 2023 • 14:15' },
+  { ref: '#TXN-8829106', merchant: 'Pharmacie Thiaroye', phone: '+221 78 123 99 00', amount: '8,450.00', operator: 'Free Money', status: 'Failed', time: 'Oct 24, 2023 • 13:58' },
+  { ref: '#TXN-8829107', merchant: 'Tigo Logistics', phone: '+221 70 888 22 11', amount: '45,000.00', operator: 'E-Money', status: 'Success', time: 'Oct 24, 2023 • 12:44' },
 ];
 
 export function Transactions() {
@@ -79,33 +45,29 @@ export function Transactions() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <nav className="flex items-center gap-2 text-xs text-on-surface-variant mb-2">
-            <span>{t('nav.dashboard')}</span>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-primary font-semibold">{t('nav.transactions')}</span>
-          </nav>
-          <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('transactions.title')}</h2>
-          <p className="text-on-surface-variant text-sm mt-1">{t('transactions.subtitle')}</p>
-        </div>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-high hover:bg-surface-container-highest text-primary font-semibold text-sm rounded transition-all">
-            <Download className="w-4 h-4" />
-            {t('transactions.export')}
-          </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white font-semibold text-sm rounded shadow-lg shadow-primary/10 hover:translate-y-[-1px] transition-all">
-            <Plus className="w-4 h-4" />
-            {t('transactions.initiate')}
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title={t('transactions.title')}
+        subtitle={t('transactions.subtitle')}
+        breadcrumb={[{ label: t('nav.dashboard') }, { label: t('nav.transactions') }]}
+        actions={
+          <>
+            <Button variant="secondary">
+              <Download className="w-4 h-4" />
+              {t('transactions.export')}
+            </Button>
+            <Button>
+              <Plus className="w-4 h-4" />
+              {t('transactions.initiate')}
+            </Button>
+          </>
+        }
+      />
 
       <section className="bg-surface-container-low p-6 rounded-xl mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6">
           <div className="space-y-2">
             <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">{t('transactions.filter.status')}</label>
-            <select 
+            <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="w-full bg-surface-container-lowest border-none rounded-lg text-sm py-2.5 focus:ring-2 focus:ring-secondary/20"
@@ -126,20 +88,16 @@ export function Transactions() {
           </div>
           <div className="space-y-2">
             <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">{t('transactions.filter.merchant')}</label>
-            <div className="relative">
-              <Store className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4" />
-              <input 
-                value={merchantSearch}
-                onChange={(e) => setMerchantSearch(e.target.value)}
-                className="w-full bg-surface-container-lowest border-none rounded-lg text-sm py-2.5 pl-10 focus:ring-2 focus:ring-secondary/20" 
-                placeholder={t('transactions.filter.searchMerchant')} 
-                type="text"
-              />
-            </div>
+            <SearchInput
+              value={merchantSearch}
+              onChange={setMerchantSearch}
+              placeholder={t('transactions.filter.searchMerchant')}
+              icon={Store}
+            />
           </div>
           <div className="space-y-2">
             <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">{t('transactions.filter.operator')}</label>
-            <select 
+            <select
               value={operatorFilter}
               onChange={(e) => setOperatorFilter(e.target.value)}
               className="w-full bg-surface-container-lowest border-none rounded-lg text-sm py-2.5 focus:ring-2 focus:ring-secondary/20"
@@ -152,7 +110,7 @@ export function Transactions() {
             </select>
           </div>
           <div className="flex items-end pb-1">
-            <button 
+            <button
               onClick={resetFilters}
               className="text-sm font-semibold text-secondary hover:underline flex items-center gap-1"
             >
@@ -196,9 +154,8 @@ export function Transactions() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <div className={cn(
-                      "w-6 h-6 rounded-full flex items-center justify-center text-[10px] text-white font-bold",
-                      tx.operator.includes('Orange') ? "bg-orange-500" : 
-                      tx.operator.includes('Wave') ? "bg-blue-600" : "bg-red-600"
+                      'w-6 h-6 rounded-full flex items-center justify-center text-[10px] text-white font-bold',
+                      tx.operator.includes('Orange') ? 'bg-orange-500' : tx.operator.includes('Wave') ? 'bg-blue-600' : 'bg-red-600'
                     )}>
                       {tx.operator.substring(0, 2).toUpperCase()}
                     </div>
@@ -206,25 +163,18 @@ export function Transactions() {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <span className={cn(
-                      "w-2 h-2 rounded-full",
-                      tx.status === 'Success' ? "bg-secondary" : 
-                      tx.status === 'Pending' ? "bg-amber-500" : "bg-error"
-                    )}></span>
-                    <span className={cn(
-                      "text-[11px] font-bold uppercase tracking-wider",
-                      tx.status === 'Success' ? "text-secondary" : 
-                      tx.status === 'Pending' ? "text-amber-600" : "text-error"
-                    )}>{t(`common.${tx.status.toLowerCase()}`)}</span>
-                  </div>
+                  <StatusBadge
+                    status={tx.status as StatusType}
+                    label={t(`common.${tx.status.toLowerCase()}`)}
+                    variant="dot"
+                  />
                 </td>
                 <td className="px-6 py-4 text-xs text-on-surface-variant tabular-nums">{tx.time}</td>
                 <td className="px-6 py-4">
                   <div className="flex items-center justify-center gap-3">
-                    <button className="p-1.5 hover:bg-surface-container-high rounded transition-colors text-on-surface-variant hover:text-primary"><Eye className="w-4 h-4" /></button>
-                    <button className="p-1.5 hover:bg-surface-container-high rounded transition-colors text-on-surface-variant hover:text-primary"><Copy className="w-4 h-4" /></button>
-                    <button className="p-1.5 hover:bg-surface-container-high rounded transition-colors text-on-surface-variant hover:text-secondary"><ReceiptText className="w-4 h-4" /></button>
+                    <IconButton icon={Eye} />
+                    <IconButton icon={Copy} />
+                    <IconButton icon={ReceiptText} hoverColor="secondary" />
                   </div>
                 </td>
               </tr>

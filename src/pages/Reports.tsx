@@ -1,33 +1,30 @@
 import React from 'react';
-import { 
-  BarChart3, 
-  Download, 
-  Calendar, 
-  Filter, 
-  TrendingUp, 
-  ArrowUpRight, 
-  ArrowDownRight,
-  PieChart as PieChartIcon,
+import {
+  BarChart3,
+  Download,
+  Calendar,
+  Filter,
+  TrendingUp,
+  ArrowUpRight,
   FileText,
   Share2,
   RefreshCw
 } from 'lucide-react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
   PieChart,
-  Pie
+  Pie,
+  Cell
 } from 'recharts';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
+import { Button, PageHeader } from '../components/ui';
 
 const data = [
   { name: 'Mon', value: 4000 },
@@ -51,22 +48,22 @@ export function Reports() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('reports.title')}</h2>
-          <p className="text-on-surface-variant text-sm mt-1">{t('reports.subtitle')}</p>
-        </div>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant/20 rounded font-bold text-xs text-primary hover:bg-surface-container-low transition-colors">
-            <Share2 className="w-4 h-4" />
-            {t('reports.share')}
-          </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white font-semibold text-sm rounded shadow-lg shadow-primary/10 hover:translate-y-[-1px] transition-all">
-            <Download className="w-4 h-4" />
-            {t('reports.export')}
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title={t('reports.title')}
+        subtitle={t('reports.subtitle')}
+        actions={
+          <>
+            <Button variant="outline" size="sm">
+              <Share2 className="w-4 h-4" />
+              {t('reports.share')}
+            </Button>
+            <Button>
+              <Download className="w-4 h-4" />
+              {t('reports.export')}
+            </Button>
+          </>
+        }
+      />
 
       <div className="flex gap-4 mb-8">
         <div className="flex bg-surface-container-low p-1 rounded-lg border border-outline-variant/10">
@@ -74,11 +71,11 @@ export function Reports() {
             { key: 'Daily', label: t('reports.filter.daily') },
             { key: 'Weekly', label: t('reports.filter.weekly') },
             { key: 'Monthly', label: t('reports.filter.monthly') },
-            { key: 'Quarterly', label: t('reports.filter.quarterly') }
+            { key: 'Quarterly', label: t('reports.filter.quarterly') },
           ].map((item) => (
             <button key={item.key} className={cn(
-              "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
-              item.key === 'Weekly' ? "bg-white text-primary shadow-sm" : "text-on-surface-variant hover:text-primary"
+              'px-4 py-1.5 rounded-md text-xs font-bold transition-all',
+              item.key === 'Weekly' ? 'bg-white text-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
             )}>{item.label}</button>
           ))}
         </div>
@@ -114,14 +111,14 @@ export function Reports() {
               <AreaChart data={data}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#000f22" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#000f22" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#000f22" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#000f22" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#666' }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#666' }} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                   itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
                 />
@@ -137,15 +134,7 @@ export function Reports() {
           <div className="h-48 w-full mb-8">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie
-                  data={pieData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
+                <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
@@ -158,7 +147,7 @@ export function Reports() {
             {pieData.map((item) => (
               <div key={item.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></div>
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
                   <span className="text-xs font-medium text-primary">{item.name}</span>
                 </div>
                 <span className="text-xs font-bold text-primary">{item.value}%</span>

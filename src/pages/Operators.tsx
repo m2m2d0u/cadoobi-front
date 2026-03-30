@@ -1,10 +1,8 @@
 import React from 'react';
-import { 
-  Signal, 
-  Activity, 
-  Settings, 
-  AlertTriangle, 
-  CheckCircle2, 
+import {
+  Activity,
+  Settings,
+  CheckCircle2,
   BarChart3,
   ArrowUpRight,
   ArrowDownRight,
@@ -12,6 +10,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
+import { Button, PageHeader, StatusBadge } from '../components/ui';
+import type { StatusType } from '../components/ui';
 
 const operators = [
   { id: 1, name: 'Orange Money', region: 'Senegal', status: 'Healthy', latency: '120ms', successRate: '99.4%', volume: 'XOF 450M', color: 'bg-orange-500' },
@@ -25,52 +25,51 @@ export function Operators() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('operators.title')}</h2>
-          <p className="text-on-surface-variant text-sm mt-1">{t('operators.subtitle')}</p>
-        </div>
-        <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant/20 rounded font-bold text-xs text-primary hover:bg-surface-container-low transition-colors">
-            <Activity className="w-4 h-4" />
-            {t('operators.health')}
-          </button>
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white font-semibold text-sm rounded shadow-lg shadow-primary/10 hover:translate-y-[-1px] transition-all">
-            <Settings className="w-4 h-4" />
-            {t('operators.config')}
-          </button>
-        </div>
-      </div>
+      <PageHeader
+        title={t('operators.title')}
+        subtitle={t('operators.subtitle')}
+        actions={
+          <>
+            <Button variant="outline" size="sm">
+              <Activity className="w-4 h-4" />
+              {t('operators.health')}
+            </Button>
+            <Button>
+              <Settings className="w-4 h-4" />
+              {t('operators.config')}
+            </Button>
+          </>
+        }
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
         <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
           {operators.map((op) => (
             <div key={op.id} className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-6">
-                <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-inner", op.color)}>
+                <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-inner', op.color)}>
                   {op.name.charAt(0)}
                 </div>
-                <div className={cn(
-                  "px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider",
-                  op.status === 'Healthy' ? "bg-secondary/10 text-secondary" : "bg-error/10 text-error"
-                )}>
-                  {op.status === 'Healthy' ? t('common.healthy') : t('common.degraded')}
-                </div>
+                <StatusBadge
+                  status={op.status as StatusType}
+                  label={op.status === 'Healthy' ? t('common.healthy') : t('common.degraded')}
+                  variant="badge"
+                />
               </div>
-              
+
               <h4 className="font-bold text-lg text-primary mb-1">{op.name}</h4>
               <p className="text-xs text-on-surface-variant mb-6">{op.region} {t('operators.card.gateway')}</p>
-              
+
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-on-surface-variant">{t('operators.card.successRate')}</span>
                   <span className="font-bold text-primary">{op.successRate}</span>
                 </div>
                 <div className="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-                  <div 
-                    className={cn("h-full rounded-full", op.status === 'Healthy' ? "bg-secondary" : "bg-error")} 
+                  <div
+                    className={cn('h-full rounded-full', op.status === 'Healthy' ? 'bg-secondary' : 'bg-error')}
                     style={{ width: op.successRate }}
-                  ></div>
+                  />
                 </div>
                 <div className="flex justify-between items-center text-xs pt-2">
                   <span className="text-on-surface-variant">{t('operators.card.latency')}</span>
@@ -101,15 +100,15 @@ export function Operators() {
             {t('operators.metrics.title')}
           </h3>
           <div className="flex gap-2">
-            {['1h', '6h', '24h', '7d'].map((t_val) => (
-              <button key={t_val} className={cn(
-                "px-3 py-1 rounded text-[10px] font-bold uppercase transition-colors",
-                t_val === '1h' ? "bg-primary text-white" : "hover:bg-surface-container-high text-on-surface-variant"
-              )}>{t_val}</button>
+            {['1h', '6h', '24h', '7d'].map((val) => (
+              <button key={val} className={cn(
+                'px-3 py-1 rounded text-[10px] font-bold uppercase transition-colors',
+                val === '1h' ? 'bg-primary text-white' : 'hover:bg-surface-container-high text-on-surface-variant'
+              )}>{val}</button>
             ))}
           </div>
         </div>
-        
+
         <div className="p-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-1">
@@ -149,14 +148,14 @@ export function Operators() {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-10 h-48 w-full bg-surface-container-low rounded-xl flex items-end gap-1 p-4">
             {Array.from({ length: 48 }).map((_, i) => (
-              <div 
-                key={i} 
-                className="flex-grow bg-primary/20 hover:bg-primary transition-colors rounded-t-sm" 
+              <div
+                key={i}
+                className="flex-grow bg-primary/20 hover:bg-primary transition-colors rounded-t-sm"
                 style={{ height: `${Math.random() * 80 + 20}%` }}
-              ></div>
+              />
             ))}
           </div>
           <div className="flex justify-between mt-2 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest px-1">

@@ -1,22 +1,20 @@
 import React from 'react';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Wallet, 
-  Store, 
-  Clock, 
+import {
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  Store,
+  Clock,
   ArrowRight,
   Send,
   UserPlus,
   PieChart as PieChartIcon
 } from 'lucide-react';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   AreaChart,
   Area,
@@ -26,6 +24,7 @@ import {
 } from 'recharts';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
+import { PageHeader } from '../components/ui';
 
 const trendData = [
   { time: '08:00', value: 1.2 },
@@ -49,18 +48,16 @@ export function Dashboard() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="mb-8 flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold font-headline text-primary mb-1">{t('dashboard.title')}</h1>
-          <p className="text-on-surface-variant text-sm">{t('dashboard.subtitle')}</p>
-        </div>
-        <div className="flex gap-3">
+      <PageHeader
+        title={t('dashboard.title')}
+        subtitle={t('dashboard.subtitle')}
+        actions={
           <div className="flex items-center gap-2 px-4 py-2 bg-surface-container-lowest text-primary font-semibold rounded-lg shadow-sm border border-outline-variant/10 text-sm">
             <Clock className="w-4 h-4" />
             {t('dashboard.today')}: Oct 24, 2023
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

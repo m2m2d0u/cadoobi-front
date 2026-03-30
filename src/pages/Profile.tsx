@@ -1,34 +1,30 @@
 import React from 'react';
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Calendar, 
-  ShieldCheck, 
-  Lock, 
-  Smartphone, 
-  Globe, 
-  Clock, 
-  Moon, 
-  Sun, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  ShieldCheck,
+  Lock,
+  Smartphone,
+  Globe,
+  Clock,
+  Moon,
+  Sun,
   LogOut,
   ChevronRight,
   ShieldAlert
 } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'motion/react';
+import { PageHeader } from '../components/ui';
 
 export function Profile() {
   const { t, language } = useLanguage();
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('profile.title')}</h2>
-        <p className="text-on-surface-variant text-sm mt-1">{t('profile.subtitle')}</p>
-      </div>
+      <PageHeader title={t('profile.title')} subtitle={t('profile.subtitle')} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: User Card & Security */}

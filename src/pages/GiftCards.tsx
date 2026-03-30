@@ -1,20 +1,17 @@
 import React from 'react';
-import { 
-  Ticket, 
-  Plus, 
-  Search, 
-  Filter, 
-  Download, 
-  Gift, 
-  History, 
-  BarChart2,
+import {
+  Plus,
+  Filter,
+  Download,
+  Gift,
   CheckCircle2,
   Clock,
   Tag,
   ArrowRight
 } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
+import { Button, PageHeader, SearchInput, StatsCard, StatusBadge } from '../components/ui';
+import type { StatusType } from '../components/ui';
 
 const giftCards = [
   { id: 'GC-8821', merchant: 'Auchan Senegal', type: 'Digital', value: 'XOF 50,000', status: 'Active', expiry: 'Dec 2026', code: '****-****-8821' },
@@ -28,59 +25,61 @@ export function GiftCards() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('giftcards.title')}</h2>
-          <p className="text-on-surface-variant text-sm mt-1">{t('giftcards.subtitle')}</p>
-        </div>
-        <button className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white font-semibold text-sm rounded shadow-lg shadow-primary/10 hover:translate-y-[-1px] transition-all">
-          <Plus className="w-4 h-4" />
-          {t('giftcards.issue')}
-        </button>
-      </div>
+      <PageHeader
+        title={t('giftcards.title')}
+        subtitle={t('giftcards.subtitle')}
+        actions={
+          <Button>
+            <Plus className="w-4 h-4" />
+            {t('giftcards.issue')}
+          </Button>
+        }
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center mb-4">
-            <Gift className="w-5 h-5" />
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('giftcards.stats.totalIssued')}</p>
-          <h3 className="text-2xl font-bold text-primary">14,205</h3>
-          <p className="text-[10px] text-secondary font-bold mt-2">{t('giftcards.stats.issuedDesc')}</p>
-        </div>
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="w-10 h-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center mb-4">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('giftcards.stats.redemptionRate')}</p>
-          <h3 className="text-2xl font-bold text-primary">68.4%</h3>
-          <p className="text-[10px] text-secondary font-bold mt-2">{t('giftcards.stats.redemptionDesc')}</p>
-        </div>
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="w-10 h-10 bg-amber-500/10 text-amber-600 rounded-lg flex items-center justify-center mb-4">
-            <Clock className="w-5 h-5" />
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('giftcards.stats.pendingActivation')}</p>
-          <h3 className="text-2xl font-bold text-primary">412</h3>
-          <p className="text-[10px] text-on-surface-variant font-bold mt-2">{t('giftcards.stats.pendingDesc')}</p>
-        </div>
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="w-10 h-10 bg-error/10 text-error rounded-lg flex items-center justify-center mb-4">
-            <Tag className="w-5 h-5" />
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('giftcards.stats.expiredValue')}</p>
-          <h3 className="text-2xl font-bold text-primary">XOF 2.4M</h3>
-          <p className="text-[10px] text-error font-bold mt-2">{t('giftcards.stats.expiredDesc')}</p>
-        </div>
+        <StatsCard
+          label={t('giftcards.stats.totalIssued')}
+          value="14,205"
+          icon={Gift}
+          iconColor="primary"
+          desc={t('giftcards.stats.issuedDesc')}
+          descColor="secondary"
+        />
+        <StatsCard
+          label={t('giftcards.stats.redemptionRate')}
+          value="68.4%"
+          icon={CheckCircle2}
+          iconColor="secondary"
+          desc={t('giftcards.stats.redemptionDesc')}
+          descColor="secondary"
+        />
+        <StatsCard
+          label={t('giftcards.stats.pendingActivation')}
+          value="412"
+          icon={Clock}
+          iconColor="amber"
+          desc={t('giftcards.stats.pendingDesc')}
+          descColor="muted"
+        />
+        <StatsCard
+          label={t('giftcards.stats.expiredValue')}
+          value="XOF 2.4M"
+          icon={Tag}
+          iconColor="error"
+          desc={t('giftcards.stats.expiredDesc')}
+          descColor="error"
+        />
       </div>
 
       <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm">
         <div className="p-4 border-b border-outline-variant/10 flex flex-wrap gap-4 items-center justify-between">
           <div className="flex gap-4 flex-grow max-w-2xl">
-            <div className="relative flex-grow">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4" />
-              <input className="w-full bg-surface-container-high border-none rounded-lg text-sm py-2 pl-10" placeholder={t('giftcards.search.placeholder')} type="text"/>
-            </div>
+            <SearchInput
+              value=""
+              onChange={() => {}}
+              placeholder={t('giftcards.search.placeholder')}
+              className="flex-grow"
+            />
             <button className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-lg text-sm font-bold text-primary">
               <Filter className="w-4 h-4" />
               {t('transactions.filter.title')}
@@ -123,13 +122,11 @@ export function GiftCards() {
                   </td>
                   <td className="px-6 py-4 font-bold text-primary text-sm">{card.value}</td>
                   <td className="px-6 py-4">
-                    <span className={cn(
-                      "px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider",
-                      card.status === 'Active' ? "bg-secondary/10 text-secondary" : 
-                      card.status === 'Redeemed' ? "bg-primary/10 text-primary" : "bg-error/10 text-error"
-                    )}>
-                      {card.status === 'Active' ? t('common.active') : card.status === 'Redeemed' ? t('common.redeemed') : t('common.expired')}
-                    </span>
+                    <StatusBadge
+                      status={card.status as StatusType}
+                      label={card.status === 'Active' ? t('common.active') : card.status === 'Redeemed' ? t('common.redeemed') : t('common.expired')}
+                      variant="badge"
+                    />
                   </td>
                   <td className="px-6 py-4 text-sm text-on-surface-variant">{card.expiry}</td>
                   <td className="px-6 py-4">
@@ -142,7 +139,7 @@ export function GiftCards() {
             </tbody>
           </table>
         </div>
-        
+
         <div className="p-4 border-t border-outline-variant/10 flex justify-center">
           <button className="text-xs font-bold text-primary hover:underline">{t('giftcards.history')}</button>
         </div>

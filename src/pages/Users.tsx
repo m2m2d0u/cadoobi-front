@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Users as UsersIcon, 
-  UserPlus, 
-  Search, 
-  Shield, 
-  MoreVertical, 
-  Mail, 
-  Lock, 
-  CheckCircle2,
-  XCircle,
-  Clock,
+import {
+  Users as UsersIcon,
+  UserPlus,
+  Shield,
+  MoreVertical,
+  Mail,
+  Lock,
   Key,
   X,
   ChevronDown,
@@ -17,7 +13,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
-import { motion, AnimatePresence } from 'motion/react';
+import { Button, IconButton, Modal, PageHeader, SearchInput, StatsCard, StatusBadge } from '../components/ui';
+import type { StatusType } from '../components/ui';
 
 const users = [
   { id: 1, name: 'Abass Diallo', email: 'm.abassdiallo@gmail.com', role: 'Super Admin', status: 'Active', lastActive: '2 mins ago' },
@@ -32,155 +29,127 @@ export function Users() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-end mb-8">
-        <div>
-          <h2 className="text-3xl font-bold font-headline text-primary tracking-tight">{t('users.title')}</h2>
-          <p className="text-on-surface-variant text-sm mt-1">{t('users.subtitle')}</p>
-        </div>
-        <button 
-          onClick={() => setIsInviteModalOpen(true)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white font-semibold text-sm rounded shadow-lg shadow-primary/10 hover:translate-y-[-1px] transition-all"
-        >
-          <UserPlus className="w-4 h-4" />
-          {t('users.invite')}
-        </button>
-      </div>
+      <PageHeader
+        title={t('users.title')}
+        subtitle={t('users.subtitle')}
+        actions={
+          <Button onClick={() => setIsInviteModalOpen(true)}>
+            <UserPlus className="w-4 h-4" />
+            {t('users.invite')}
+          </Button>
+        }
+      />
 
-      <AnimatePresence>
-        {isInviteModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+      <Modal isOpen={isInviteModalOpen} onClose={() => setIsInviteModalOpen(false)}>
+        <div className="p-8">
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <h3 className="text-2xl font-bold text-primary mb-1">{t('users.modal.inviteTitle')}</h3>
+              <p className="text-sm text-on-surface-variant">{t('users.modal.inviteSubtitle')}</p>
+            </div>
+            <button
               onClick={() => setIsInviteModalOpen(false)}
-              className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
-            />
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-lg bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden"
+              className="p-2 hover:bg-surface-container-high rounded-full transition-colors"
             >
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-8">
-                  <div>
-                    <h3 className="text-2xl font-bold text-primary mb-1">{t('users.modal.inviteTitle')}</h3>
-                    <p className="text-sm text-on-surface-variant">{t('users.modal.inviteSubtitle')}</p>
-                  </div>
-                  <button 
-                    onClick={() => setIsInviteModalOpen(false)}
-                    className="p-2 hover:bg-surface-container-high rounded-full transition-colors"
-                  >
-                    <X className="w-5 h-5 text-on-surface-variant" />
-                  </button>
+              <X className="w-5 h-5 text-on-surface-variant" />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.fullName')}</label>
+              <input
+                type="text"
+                placeholder={t('users.modal.fullNamePlaceholder')}
+                className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.email')}</label>
+              <input
+                type="email"
+                placeholder={t('users.modal.emailPlaceholder')}
+                className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.assignRole')}</label>
+              <div className="relative">
+                <select className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 transition-all pr-12">
+                  <option>{t('users.modal.roleAdmin')}</option>
+                  <option>{t('users.modal.roleCompliance')}</option>
+                  <option>{t('users.modal.roleFinance')}</option>
+                  <option>{t('users.modal.roleSupport')}</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant pointer-events-none" />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-surface-container-high rounded-xl">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-primary" />
                 </div>
-
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.fullName')}</label>
-                    <input 
-                      type="text" 
-                      placeholder={t('users.modal.fullNamePlaceholder')}
-                      className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.email')}</label>
-                    <input 
-                      type="email" 
-                      placeholder={t('users.modal.emailPlaceholder')}
-                      className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-primary uppercase tracking-widest">{t('users.modal.assignRole')}</label>
-                    <div className="relative">
-                      <select className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 transition-all pr-12">
-                        <option>{t('users.modal.roleAdmin')}</option>
-                        <option>{t('users.modal.roleCompliance')}</option>
-                        <option>{t('users.modal.roleFinance')}</option>
-                        <option>{t('users.modal.roleSupport')}</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-on-surface-variant pointer-events-none" />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 bg-surface-container-high rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Mail className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-primary">{t('users.modal.sendEmail')}</p>
-                        <p className="text-[11px] text-on-surface-variant">{t('users.modal.sendEmailDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="w-12 h-6 bg-secondary rounded-full relative cursor-pointer">
-                      <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-10 space-y-4">
-                  <button className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
-                    {t('users.modal.sendInvitation')}
-                    <Send className="w-4 h-4 rotate-[-45deg]" />
-                  </button>
-                  <button 
-                    onClick={() => setIsInviteModalOpen(false)}
-                    className="w-full py-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
-                  >
-                    {t('users.modal.cancel')}
-                  </button>
+                <div>
+                  <p className="text-sm font-bold text-primary">{t('users.modal.sendEmail')}</p>
+                  <p className="text-[11px] text-on-surface-variant">{t('users.modal.sendEmailDesc')}</p>
                 </div>
               </div>
-            </motion.div>
+              <div className="w-12 h-6 bg-secondary rounded-full relative cursor-pointer">
+                <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
+              </div>
+            </div>
           </div>
-        )}
-      </AnimatePresence>
+
+          <div className="mt-10 space-y-4">
+            <button className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+              {t('users.modal.sendInvitation')}
+              <Send className="w-4 h-4 rotate-[-45deg]" />
+            </button>
+            <button
+              onClick={() => setIsInviteModalOpen(false)}
+              className="w-full py-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
+            >
+              {t('users.modal.cancel')}
+            </button>
+          </div>
+        </div>
+      </Modal>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="flex justify-between items-center mb-4">
-            <div className="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-              <UsersIcon className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">{t('users.stats.newThisWeek')}</span>
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('users.stats.totalTeam')}</p>
-          <h3 className="text-2xl font-bold text-primary">24</h3>
-        </div>
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="flex justify-between items-center mb-4">
-            <div className="w-10 h-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">{t('users.stats.rolesDefined')}</span>
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('users.stats.security')}</p>
-          <h3 className="text-2xl font-bold text-primary">98%</h3>
-        </div>
-        <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10">
-          <div className="flex justify-between items-center mb-4">
-            <div className="w-10 h-10 bg-amber-500/10 text-amber-600 rounded-lg flex items-center justify-center">
-              <Lock className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] font-bold text-error uppercase tracking-widest">{t('users.stats.failedLogins')}</span>
-          </div>
-          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">{t('users.stats.activeSessions')}</p>
-          <h3 className="text-2xl font-bold text-primary">8</h3>
-        </div>
+        <StatsCard
+          label={t('users.stats.totalTeam')}
+          value="24"
+          icon={UsersIcon}
+          iconColor="primary"
+          badge={<span className="text-[10px] font-bold text-secondary uppercase tracking-widest">{t('users.stats.newThisWeek')}</span>}
+        />
+        <StatsCard
+          label={t('users.stats.security')}
+          value="98%"
+          icon={Shield}
+          iconColor="secondary"
+          badge={<span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">{t('users.stats.rolesDefined')}</span>}
+        />
+        <StatsCard
+          label={t('users.stats.activeSessions')}
+          value="8"
+          icon={Lock}
+          iconColor="amber"
+          badge={<span className="text-[10px] font-bold text-error uppercase tracking-widest">{t('users.stats.failedLogins')}</span>}
+        />
       </div>
 
       <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm">
         <div className="p-4 border-b border-outline-variant/10 flex gap-4 items-center">
-          <div className="relative flex-grow">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant w-4 h-4" />
-            <input className="w-full bg-surface-container-high border-none rounded-lg text-sm py-2 pl-10" placeholder={t('users.search.placeholder')} type="text"/>
-          </div>
+          <SearchInput
+            value=""
+            onChange={() => {}}
+            placeholder={t('users.search.placeholder')}
+            className="flex-grow"
+          />
           <select className="bg-surface-container-high border-none rounded-lg text-sm px-4 py-2 font-bold text-primary">
             <option>{t('users.filter.allRoles')}</option>
             <option>Super Admin</option>
@@ -222,35 +191,18 @@ export function Users() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      {user.status === 'Active' ? (
-                        <CheckCircle2 className="w-4 h-4 text-secondary" />
-                      ) : user.status === 'Pending' ? (
-                        <Clock className="w-4 h-4 text-amber-500" />
-                      ) : (
-                        <XCircle className="w-4 h-4 text-error" />
-                      )}
-                      <span className={cn(
-                        "text-[10px] font-bold uppercase tracking-wider",
-                        user.status === 'Active' ? "text-secondary" : 
-                        user.status === 'Pending' ? "text-amber-600" : "text-error"
-                      )}>
-                        {user.status === 'Active' ? t('common.active') : user.status === 'Pending' ? t('common.pending') : t('common.blocked')}
-                      </span>
-                    </div>
+                    <StatusBadge
+                      status={user.status as StatusType}
+                      label={user.status === 'Active' ? t('common.active') : user.status === 'Pending' ? t('common.pending') : t('common.blocked')}
+                      variant="icon"
+                    />
                   </td>
                   <td className="px-6 py-4 text-sm text-on-surface-variant">{user.lastActive}</td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
-                        <Mail className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
-                        <Key className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant hover:text-primary">
-                        <MoreVertical className="w-4 h-4" />
-                      </button>
+                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <IconButton icon={Mail} size="md" className="rounded-full" />
+                      <IconButton icon={Key} size="md" className="rounded-full" />
+                      <IconButton icon={MoreVertical} size="md" className="rounded-full" />
                     </div>
                   </td>
                 </tr>
@@ -258,7 +210,7 @@ export function Users() {
             </tbody>
           </table>
         </div>
-        
+
         <div className="p-6 border-t border-outline-variant/10 bg-surface-container-low/30">
           <div className="flex items-center gap-4">
             <Shield className="w-8 h-8 text-secondary" />
