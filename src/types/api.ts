@@ -22,6 +22,14 @@ export interface ApiResponse<T = unknown> {
   error: ApiErrorDetails | null;
   timestamp: string;   // ISO-8601
   path: string;
+  pagination?: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    first: boolean;
+    last: boolean;
+  };
 }
 
 /** Maps to ControllerApiResponse.ErrorDetails */

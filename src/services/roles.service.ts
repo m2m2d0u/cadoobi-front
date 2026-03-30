@@ -7,8 +7,8 @@ import type {
 } from '../types/api';
 
 export const rolesService = {
-  list: (params?: { activeOnly?: boolean }) =>
-    api.get<ApiResponse<RoleResponse[]>>('/roles', { params }).then((r) => r.data.data),
+  list: (params?: { activeOnly?: boolean; page?: number; size?: number; sort?: string }) =>
+    api.get<ApiResponse<RoleResponse[]>>('/roles', { params }).then((r) => r.data),
 
   getById: (id: string) =>
     api.get<ApiResponse<RoleResponse>>(`/roles/${id}`).then((r) => r.data.data),

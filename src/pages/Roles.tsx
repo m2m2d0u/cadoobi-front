@@ -11,7 +11,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { Button, IconButton, Modal, PageHeader, SearchInput, StatsCard, StatusBadge } from '../components/ui';
+import { Button, IconButton, Modal, PageHeader, SearchInput, StatsCard, StatusBadge, Pagination } from '../components/ui';
 import type { StatusType } from '../components/ui';
 import { rolesService, permissionsService } from '../services';
 import type { RoleResponse, CreateRoleRequest, PermissionResponse } from '../types/api';
@@ -25,6 +25,12 @@ export function Roles() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalElements, setTotalElements] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,11 +48,15 @@ export function Roles() {
       setIsLoading(true);
       setError(null);
       const [rRes, pRes] = await Promise.all([
-        rolesService.list(),
-        permissionsService.list()
+        rolesService.list({ page: currentPage, size: pageSize }),
+        permissionsService.list({ size: 500 }) // Load permissions for form allocation
       ]);
-      setRoles(rRes || []);
-      setAvailablePermissions(pRes || []);
+      
+      setRoles(rRes?.data || []);
+      setTotalElements(rRes?.pagination?.totalElements || 0);
+      setTotalPages(rRes?.pagination?.totalPages || 0);
+      
+      setAvailablePermissions(pRes?.data || []);
     } catch (err: any) {
       console.error(err);
       setError(err?.response?.data?.message || 'Failed to load roles and permissions');
@@ -57,7 +67,7 @@ export function Roles() {
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,7 +185,7 @@ export function Roles() {
                 value={formData.name}
                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                 placeholder="e.g. Finance Officer"
-                className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-bold"
               />
             </div>
             
@@ -188,7 +198,7 @@ export function Roles() {
                 onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                 placeholder="FINANCE_OFFICER"
                 disabled={!!editingId}
-                className={`w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all ${editingId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full bg-surface-container-high border-none rounded-lg p-4 text-sm font-mono focus:ring-2 focus:ring-primary/20 transition-all ${editingId ? 'opacity-50 cursor-not-allowed' : ''}`}
               />
             </div>
             
@@ -261,7 +271,7 @@ export function Roles() {
               <X className="w-5 h-5 text-on-surface-variant" />
             </button>
           </div>
-          <p className="text-on-surface-variant mb-8">{t('roles.deleteConfirm')}</p>
+          <p className="text-on-surface-variant leading-relaxed mb-8">{t('roles.deleteConfirm')}</p>
           <div className="flex gap-4">
             <Button variant="outline" onClick={() => setDeleteConfirmId(null)} className="flex-1 justify-center rounded-xl p-4 min-w-0">
               {t('common.cancel')}
@@ -280,7 +290,7 @@ export function Roles() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <StatsCard
           label={t('roles.stats.total')}
-          value={roles.length.toString()}
+          value={totalElements.toString()}
           icon={ShieldCheck}
           iconColor="primary"
         />
@@ -374,14 +384,14 @@ export function Roles() {
                         <IconButton 
                           icon={Edit2} 
                           size="md" 
-                          className="rounded-full" 
+                          className="rounded-full bg-surface-container-low hover:bg-surface-container-high" 
                           onClick={() => handleEdit(role)}
                         />
                         {!role.isSystemRole && (
                           <IconButton 
                             icon={Trash2} 
                             size="md"  
-                            className="rounded-full text-error hover:bg-error/10 hover:text-error" 
+                            className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error" 
                             onClick={() => setDeleteConfirmId(role.id)}
                           />
                         )}
@@ -393,6 +403,19 @@ export function Roles() {
             </table>
           )}
         </div>
+        
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(size) => {
+             setPageSize(size);
+             setCurrentPage(0);
+          }}
+        />
+        
       </div>
     </div>
   );

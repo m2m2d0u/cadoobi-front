@@ -2,12 +2,12 @@ import { api } from '../lib/axios';
 import type { 
   ApiResponse, 
   PermissionResponse, 
-  CreatePermissionRequest 
+  CreatePermissionRequest
 } from '../types/api';
 
 export const permissionsService = {
-  list: (params?: { activeOnly?: boolean }) =>
-    api.get<ApiResponse<PermissionResponse[]>>('/permissions', { params }).then((r) => r.data.data),
+  list: (params?: { activeOnly?: boolean; page?: number; size?: number; sort?: string }) =>
+    api.get<ApiResponse<PermissionResponse[]>>('/permissions', { params }).then((r) => r.data),
 
   getById: (id: string) =>
     api.get<ApiResponse<PermissionResponse>>(`/permissions/${id}`).then((r) => r.data.data),

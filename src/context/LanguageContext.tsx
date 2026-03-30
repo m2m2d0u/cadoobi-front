@@ -182,6 +182,8 @@ const translations = {
     'users.modal.fullNamePlaceholder': 'e.g. Amadou Thiam',
     'users.modal.email': 'Email Address',
     'users.modal.emailPlaceholder': 'amadou@example.com',
+    'users.modal.password': 'Temporary Password',
+    'users.modal.passwordPlaceholder': 'Enter initial password',
     'users.modal.assignRole': 'Assign Role',
     'users.modal.roleAdmin': 'Admin (Full Control)',
     'users.modal.roleCompliance': 'Compliance Officer',
@@ -191,6 +193,12 @@ const translations = {
     'users.modal.sendEmailDesc': 'User will receive login instructions',
     'users.modal.sendInvitation': 'Send Invitation',
     'users.modal.cancel': 'Cancel',
+    'users.modal.suspendTitle': 'Suspend User Account',
+    'users.modal.suspendDesc': 'Are you sure you want to suspend this user? They will immediately lose access to the platform.',
+    'users.modal.suspendConfirm': 'Yes, Suspend User',
+    'users.modal.editTitle': 'Edit User',
+    'users.modal.editSubtitle': 'Modify user details and platform access.',
+    'users.modal.saveChanges': 'Save Changes',
     'merchants.modal.registerTitle': 'Register Merchant',
     'merchants.modal.registerSubtitle': 'Complete the business profile to begin onboarding',
     'merchants.modal.step1': 'Basic Info',
@@ -313,6 +321,10 @@ const translations = {
     'common.operator.wave': 'Wave',
     'common.operator.free': 'Free Money',
     'common.operator.emoney': 'E-Money',
+    'common.pagination.of': 'of',
+    'common.pagination.results': 'results',
+    'common.pagination.noResults': '0 results',
+    'common.pagination.rows': 'Rows:',
 
     'nav.roles': 'Roles',
     'nav.permissions': 'Permissions',
@@ -536,6 +548,8 @@ const translations = {
     'users.modal.fullNamePlaceholder': 'ex: Amadou Thiam',
     'users.modal.email': 'Adresse e-mail',
     'users.modal.emailPlaceholder': 'amadou@exemple.com',
+    'users.modal.password': 'Mot de passe temporaire',
+    'users.modal.passwordPlaceholder': 'Entrez le mot de passe initial',
     'users.modal.assignRole': 'Attribuer un rôle',
     'users.modal.roleAdmin': 'Admin (Contrôle total)',
     'users.modal.roleCompliance': 'Agent de conformité',
@@ -545,6 +559,12 @@ const translations = {
     'users.modal.sendEmailDesc': 'L\'utilisateur recevra des instructions de connexion',
     'users.modal.sendInvitation': 'Envoyer l\'invitation',
     'users.modal.cancel': 'Annuler',
+    'users.modal.suspendTitle': 'Suspendre le compte',
+    'users.modal.suspendDesc': 'Voulez-vous vraiment suspendre cet utilisateur ? Il perdra immédiatement l\'accès à la plateforme.',
+    'users.modal.suspendConfirm': 'Oui, suspendre',
+    'users.modal.editTitle': 'Modifier l\'utilisateur',
+    'users.modal.editSubtitle': 'Modifier les détails et l\'accès de l\'utilisateur.',
+    'users.modal.saveChanges': 'Enregistrer les modifications',
     'merchants.modal.registerTitle': 'Enregistrer un marchand',
     'merchants.modal.registerSubtitle': 'Complétez le profil de l\'entreprise pour commencer l\'intégration',
     'merchants.modal.step1': 'Infos de base',
@@ -667,6 +687,10 @@ const translations = {
     'common.operator.wave': 'Wave',
     'common.operator.free': 'Free Money',
     'common.operator.emoney': 'E-Money',
+    'common.pagination.of': 'sur',
+    'common.pagination.results': 'résultats',
+    'common.pagination.noResults': '0 résultat',
+    'common.pagination.rows': 'Lignes :',
 
     'nav.roles': 'Rôles',
     'nav.permissions': 'Autorisations',
@@ -722,7 +746,15 @@ const translations = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('cadoobi_language');
+    return (saved === 'en' || saved === 'fr') ? (saved as Language) : 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('cadoobi_language', lang);
+  };
 
   const t = (key: string) => {
     return translations[language][key as keyof typeof translations['en']] || key;

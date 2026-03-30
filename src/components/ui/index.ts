@@ -6,3 +6,4 @@ export { SearchInput } from './SearchInput';
 export { StatusBadge } from './StatusBadge';
 export type { StatusType } from './StatusBadge';
 export { StatsCard } from './StatsCard';
+export { Pagination } from './Pagination';

@@ -4,13 +4,13 @@ import type {
   UserResponse, 
   CreateUserRequest, 
   UpdateUserRequest, 
-  ChangePasswordRequest 
+  ChangePasswordRequest
 } from '../types/api';
 import type { UserStatus } from '../types/enums';
 
 export const usersService = {
-  list: (params?: { status?: UserStatus }) =>
-    api.get<ApiResponse<UserResponse[]>>('/users', { params }).then((r) => r.data.data),
+  list: (params?: { status?: UserStatus; page?: number; size?: number; sort?: string }) =>
+    api.get<ApiResponse<UserResponse[]>>('/users', { params }).then((r) => r.data),
 
   getById: (id: string) =>
     api.get<ApiResponse<UserResponse>>(`/users/${id}`).then((r) => r.data.data),

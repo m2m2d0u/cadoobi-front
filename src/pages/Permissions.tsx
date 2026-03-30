@@ -12,7 +12,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { Button, IconButton, Modal, PageHeader, SearchInput, StatsCard, StatusBadge } from '../components/ui';
+import { Button, IconButton, Modal, PageHeader, SearchInput, StatsCard, StatusBadge, Pagination } from '../components/ui';
 import type { StatusType } from '../components/ui';
 import { permissionsService } from '../services';
 import type { PermissionResponse, CreatePermissionRequest } from '../types/api';
@@ -25,6 +25,12 @@ export function Permissions() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalElements, setTotalElements] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -42,8 +48,10 @@ export function Permissions() {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await permissionsService.list();
-      setPermissions(data || []);
+      const data = await permissionsService.list({ page: currentPage, size: pageSize });
+      setPermissions(data?.data || []);
+      setTotalElements(data?.pagination?.totalElements || 0);
+      setTotalPages(data?.pagination?.totalPages || 0);
     } catch (err: any) {
       console.error(err);
       setError(err?.response?.data?.message || 'Failed to fetch permissions');
@@ -54,7 +62,7 @@ export function Permissions() {
 
   useEffect(() => {
     fetchPermissions();
-  }, []);
+  }, [currentPage, pageSize]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,7 +172,7 @@ export function Permissions() {
                   value={formData.code}
                   onChange={e => setFormData({ ...formData, code: e.target.value })}
                   placeholder="e.g. users:read"
-                  className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full bg-surface-container-high border-none rounded-lg p-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-bold"
                 />
               </div>
 
@@ -272,7 +280,7 @@ export function Permissions() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <StatsCard
           label={t('permissions.stats.total')}
-          value={permissions.length.toString()}
+          value={totalElements.toString()}
           icon={Key}
           iconColor="primary"
         />
@@ -353,13 +361,13 @@ export function Permissions() {
                         <IconButton 
                           icon={Edit2} 
                           size="md" 
-                          className="rounded-full" 
+                          className="rounded-full bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-primary" 
                           onClick={() => handleEdit(perm)}
                         />
                         <IconButton 
                           icon={Trash2} 
                           size="md" 
-                          className="rounded-full text-error hover:bg-error/10 hover:text-error" 
+                          className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error" 
                           onClick={() => setDeleteConfirmId(perm.id)}
                         />
                       </div>
@@ -370,6 +378,19 @@ export function Permissions() {
             </table>
           )}
         </div>
+        
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(size) => {
+             setPageSize(size);
+             setCurrentPage(0);
+          }}
+        />
+
       </div>
     </div>
   );
