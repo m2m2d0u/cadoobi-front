@@ -3,8 +3,8 @@ import type { ApiResponse, MerchantResponse, CreateMerchantRequest, UpdateMercha
 import type { MerchantStatus } from '../types/enums';
 
 export const merchantsService = {
-  list: (params?: { status?: MerchantStatus }) =>
-    api.get<ApiResponse<MerchantResponse[]>>('/merchants', { params }).then((r) => r.data.data),
+  list: (params?: { status?: MerchantStatus; page?: number; size?: number; sort?: string }) =>
+    api.get<ApiResponse<MerchantResponse[]>>('/merchants', { params }).then((r) => r.data),
 
   getById: (id: string) =>
     api.get<ApiResponse<MerchantResponse>>(`/merchants/${id}`).then((r) => r.data.data),

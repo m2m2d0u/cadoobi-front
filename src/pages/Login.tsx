@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Lock, Eye, ArrowRight, Wallet, ShieldCheck, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../services/auth.service';
 
 export function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setLoading(true);
+    setError(null);
+    try {
+      const authData = await authService.login({ email, password });
+      localStorage.setItem('access_token', authData.token);
+      localStorage.setItem('refresh_token', authData.refreshToken);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,6 +93,12 @@ export function Login() {
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+            
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-on-surface" htmlFor="email">Email address</label>
               <div className="relative">
@@ -86,6 +108,8 @@ export function Login() {
                   type="email" 
                   placeholder="name@company.com" 
                   required 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <Mail className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant w-5 h-5" />
               </div>
@@ -103,6 +127,8 @@ export function Login() {
                   type="password" 
                   placeholder="••••••••••••" 
                   required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors">
                   <Eye className="w-5 h-5" />
@@ -121,11 +147,12 @@ export function Login() {
 
             <div className="pt-4">
               <button 
-                className="w-full bg-primary hover:bg-primary-container text-white py-4 px-6 rounded shadow-lg hover:shadow-xl transform active:scale-[0.98] transition-all font-headline font-bold text-lg flex items-center justify-center gap-2" 
+                className="w-full bg-primary hover:bg-primary-container text-white py-4 px-6 rounded shadow-lg hover:shadow-xl transform active:scale-[0.98] transition-all font-headline font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" 
                 type="submit"
+                disabled={loading}
               >
-                Login to Dashboard
-                <ArrowRight className="w-5 h-5" />
+                {loading ? 'Logging in...' : 'Login to Dashboard'}
+                {!loading && <ArrowRight className="w-5 h-5" />}
               </button>
             </div>
           </form>

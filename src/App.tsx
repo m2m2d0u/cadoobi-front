@@ -12,6 +12,7 @@ import { Permissions } from './pages/Permissions';
 import { Reports } from './pages/Reports';
 import { Settings } from './pages/Settings';
 import { Profile } from './pages/Profile';
+import { MerchantProfile } from './pages/MerchantProfile';
 import { Login } from './pages/Login';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/merchants" element={<Merchants />} />
+          <Route path="/merchants/:id" element={<MerchantProfile />} />
           <Route path="/operators" element={<Operators />} />
           <Route path="/gift-cards" element={<GiftCards />} />
           <Route path="/users" element={<Users />} />
