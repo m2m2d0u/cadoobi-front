@@ -1,29 +1,25 @@
 import { api } from '../lib/axios';
-
-export interface Operator {
-  id: number;
-  name: string;
-  region: string;
-  status: 'Healthy' | 'Degraded';
-  latency: string;
-  successRate: string;
-  volume: string;
-}
-
-export interface OperatorMetrics {
-  avgResponseMs: number;
-  apiCalls: number;
-  errorRate: number;
-  activeNodes: number;
-  totalNodes: number;
-  networkLoad: number;
-  history: { timestamp: string; value: number }[];
-}
+import type { 
+  ApiResponse, 
+  OperatorResponse, 
+  CreateOperatorRequest, 
+  OperatorFeeResponse, 
+  CreateOperatorFeeRequest 
+} from '../types/api';
 
 export const operatorsService = {
-  list: () =>
-    api.get<Operator[]>('/operators').then((r) => r.data),
+  listActive: () =>
+    api.get<ApiResponse<OperatorResponse[]>>('/operators').then((r) => r.data.data),
 
-  metrics: (window: '1h' | '6h' | '24h' | '7d' = '1h') =>
-    api.get<OperatorMetrics>('/operators/metrics', { params: { window } }).then((r) => r.data),
+  getById: (id: string) =>
+    api.get<ApiResponse<OperatorResponse>>(`/operators/${id}`).then((r) => r.data.data),
+
+  create: (payload: CreateOperatorRequest) =>
+    api.post<ApiResponse<OperatorResponse>>('/operators', payload).then((r) => r.data.data),
+
+  getFees: (id: string) =>
+    api.get<ApiResponse<OperatorFeeResponse[]>>(`/operators/${id}/fees`).then((r) => r.data.data),
+
+  createFee: (id: string, payload: CreateOperatorFeeRequest) =>
+    api.post<ApiResponse<OperatorFeeResponse>>(`/operators/${id}/fees`, payload).then((r) => r.data.data),
 };

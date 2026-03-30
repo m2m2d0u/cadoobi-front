@@ -1,31 +1,41 @@
 import { api } from '../lib/axios';
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: 'Active' | 'Pending' | 'Blocked';
-  lastActive: string;
-}
-
-export interface InviteUserPayload {
-  name: string;
-  email: string;
-  role: string;
-  sendWelcomeEmail: boolean;
-}
+import type { 
+  ApiResponse, 
+  UserResponse, 
+  CreateUserRequest, 
+  UpdateUserRequest, 
+  ChangePasswordRequest 
+} from '../types/api';
+import type { UserStatus } from '../types/enums';
 
 export const usersService = {
-  list: (params?: { search?: string; role?: string }) =>
-    api.get<User[]>('/users', { params }).then((r) => r.data),
+  list: (params?: { status?: UserStatus }) =>
+    api.get<ApiResponse<UserResponse[]>>('/users', { params }).then((r) => r.data.data),
 
-  invite: (payload: InviteUserPayload) =>
-    api.post<User>('/users/invite', payload).then((r) => r.data),
+  getById: (id: string) =>
+    api.get<ApiResponse<UserResponse>>(`/users/${id}`).then((r) => r.data.data),
 
-  resetPassword: (id: number) =>
-    api.post(`/users/${id}/reset-password`).then((r) => r.data),
+  getByEmail: (email: string) =>
+    api.get<ApiResponse<UserResponse>>(`/users/email/${email}`).then((r) => r.data.data),
 
-  block: (id: number) =>
-    api.patch(`/users/${id}/block`).then((r) => r.data),
+  create: (payload: CreateUserRequest) =>
+    api.post<ApiResponse<UserResponse>>('/users', payload).then((r) => r.data.data),
+
+  update: (id: string, payload: UpdateUserRequest) =>
+    api.put<ApiResponse<UserResponse>>(`/users/${id}`, payload).then((r) => r.data.data),
+
+  delete: (id: string) =>
+    api.delete<ApiResponse<void>>(`/users/${id}`).then((r) => r.data.data),
+
+  changePassword: (id: string, payload: ChangePasswordRequest) =>
+    api.post<ApiResponse<void>>(`/users/${id}/change-password`, payload).then((r) => r.data.data),
+
+  activate: (id: string) =>
+    api.post<ApiResponse<UserResponse>>(`/users/${id}/activate`).then((r) => r.data.data),
+
+  suspend: (id: string) =>
+    api.post<ApiResponse<UserResponse>>(`/users/${id}/suspend`).then((r) => r.data.data),
+
+  resetFailedLogins: (id: string) =>
+    api.post<ApiResponse<void>>(`/users/${id}/reset-failed-logins`).then((r) => r.data.data),
 };

@@ -1,43 +1,23 @@
 import { api } from '../lib/axios';
-
-export interface Merchant {
-  id: number;
-  name: string;
-  category: string;
-  location: string;
-  status: 'Active' | 'Pending' | 'Blocked';
-  volume: string;
-  joined: string;
-}
-
-export interface RegisterMerchantPayload {
-  businessName: string;
-  merchantCode: string;
-  contactPerson: string;
-  phone: string;
-  email: string;
-  address: string;
-  settlement: {
-    type: 'bank' | 'mobile';
-    bankName?: string;
-    iban?: string;
-    mobileNumber?: string;
-  };
-}
+import type { ApiResponse, MerchantResponse, CreateMerchantRequest, UpdateMerchantRequest } from '../types/api';
+import type { MerchantStatus } from '../types/enums';
 
 export const merchantsService = {
-  list: (params?: { search?: string; category?: string }) =>
-    api.get<Merchant[]>('/merchants', { params }).then((r) => r.data),
+  list: (params?: { status?: MerchantStatus }) =>
+    api.get<ApiResponse<MerchantResponse[]>>('/merchants', { params }).then((r) => r.data.data),
 
-  get: (id: number) =>
-    api.get<Merchant>(`/merchants/${id}`).then((r) => r.data),
+  getById: (id: string) =>
+    api.get<ApiResponse<MerchantResponse>>(`/merchants/${id}`).then((r) => r.data.data),
 
-  register: (payload: RegisterMerchantPayload) =>
-    api.post<Merchant>('/merchants', payload).then((r) => r.data),
+  getByCode: (code: string) =>
+    api.get<ApiResponse<MerchantResponse>>(`/merchants/code/${code}`).then((r) => r.data.data),
 
-  update: (id: number, payload: Partial<RegisterMerchantPayload>) =>
-    api.patch<Merchant>(`/merchants/${id}`, payload).then((r) => r.data),
+  create: (payload: CreateMerchantRequest) =>
+    api.post<ApiResponse<MerchantResponse>>('/merchants', payload).then((r) => r.data.data),
 
-  block: (id: number) =>
-    api.patch(`/merchants/${id}/block`).then((r) => r.data),
+  update: (id: string, payload: UpdateMerchantRequest) =>
+    api.put<ApiResponse<MerchantResponse>>(`/merchants/${id}`, payload).then((r) => r.data.data),
+
+  delete: (id: string) =>
+    api.delete<ApiResponse<void>>(`/merchants/${id}`).then((r) => r.data.data),
 };
