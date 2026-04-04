@@ -86,6 +86,11 @@ export interface CreateMerchantRequest {
   compensationAccount: CompensationAccountDto;
 }
 
+/** Maps to UpdateMerchantStatusRequest.java */
+export interface UpdateMerchantStatusRequest {
+  status?: MerchantStatus;
+}
+
 /** Maps to UpdateMerchantRequest.java */
 export interface UpdateMerchantRequest {
   name?: string;

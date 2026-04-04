@@ -1,5 +1,11 @@
 import { api } from '../lib/axios';
-import type { ApiResponse, MerchantResponse, CreateMerchantRequest, UpdateMerchantRequest } from '../types/api';
+import type {
+  ApiResponse,
+  MerchantResponse,
+  CreateMerchantRequest,
+  UpdateMerchantRequest,
+  UpdateMerchantStatusRequest
+} from '../types/api';
 import type { MerchantStatus } from '../types/enums';
 
 export const merchantsService = {
@@ -17,6 +23,9 @@ export const merchantsService = {
 
   update: (id: string, payload: UpdateMerchantRequest) =>
     api.put<ApiResponse<MerchantResponse>>(`/merchants/${id}`, payload).then((r) => r.data.data),
+
+  updateStatus: (id: string, payload: UpdateMerchantStatusRequest) =>
+    api.patch<ApiResponse<MerchantResponse>>(`/merchants/${id}/status`, payload).then((r) => r.data.data),
 
   delete: (id: string) =>
     api.delete<ApiResponse<void>>(`/merchants/${id}`).then((r) => r.data.data),

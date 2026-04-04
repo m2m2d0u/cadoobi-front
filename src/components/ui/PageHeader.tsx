@@ -12,6 +12,7 @@ interface PageHeaderProps {
   breadcrumb?: BreadcrumbItem[];
   actions?: React.ReactNode;
   className?: string;
+  customMargin?: string;
 }
 
 export function PageHeader({ title, subtitle, breadcrumb, actions, className }: PageHeaderProps) {
