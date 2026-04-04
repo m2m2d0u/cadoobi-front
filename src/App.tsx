@@ -5,7 +5,6 @@ import { Dashboard } from './pages/Dashboard';
 import { Transactions } from './pages/Transactions';
 import { Merchants } from './pages/Merchants';
 import { Operators } from './pages/Operators';
-import { GiftCards } from './pages/GiftCards';
 import { Users } from './pages/Users';
 import { Roles } from './pages/Roles';
 import { Permissions } from './pages/Permissions';
@@ -27,7 +26,6 @@ function App() {
           <Route path="/merchants" element={<Merchants />} />
           <Route path="/merchants/:id" element={<MerchantProfile />} />
           <Route path="/operators" element={<Operators />} />
-          <Route path="/gift-cards" element={<GiftCards />} />
           <Route path="/users" element={<Users />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/permissions" element={<Permissions />} />

@@ -1,5 +1,4 @@
 import type {
-  CardStatus,
   CompensationAccountType,
   FeeType,
   MerchantStatus,
@@ -8,7 +7,6 @@ import type {
   OperationType,
   PaymentStatus,
   PayoutStatus,
-  RedemptionStatus,
   UserStatus,
 } from './enums';
 
@@ -220,41 +218,6 @@ export interface PaymentResponse {
   operatorTransactionId: string | null;
   paymentUrl: string | null;
   expiresAt: string;
-  createdAt: string;
-}
-
-// ─── Gift Card ────────────────────────────────────────────────────────────────
-
-/** Maps to GiftCardBalanceResponse.java */
-export interface GiftCardBalanceResponse {
-  id: string;
-  cardCode: string;
-  merchantId: string;
-  initialAmount: number;
-  balance: number;
-  currency: string;
-  status: CardStatus;
-  expiresAt: string;
-  createdAt: string;
-}
-
-/** Maps to RedeemGiftCardRequest.java */
-export interface RedeemGiftCardRequest {
-  merchantId: string;
-  amountToRedeem: number;
-  idempotencyKey: string;
-}
-
-/** Maps to RedemptionResponse.java */
-export interface RedemptionResponse {
-  id: string;
-  giftCardId: string;
-  merchantId: string;
-  idempotencyKey: string;
-  amountRedeemed: number;
-  remainingBalance: number;
-  status: RedemptionStatus;
-  redeemedAt: string | null;
   createdAt: string;
 }
 

@@ -46,24 +46,6 @@ export enum CompensationAccountType {
   OPERATOR = 'OPERATOR',
 }
 
-// ─── Gift Card ────────────────────────────────────────────────────────────────
-
-/** Maps to CardStatus.java */
-export enum CardStatus {
-  ACTIVE         = 'ACTIVE',
-  PARTIALLY_USED = 'PARTIALLY_USED',
-  FULLY_USED     = 'FULLY_USED',
-  EXPIRED        = 'EXPIRED',
-  BLOCKED        = 'BLOCKED',
-}
-
-/** Maps to RedemptionStatus.java */
-export enum RedemptionStatus {
-  PENDING   = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  FAILED    = 'FAILED',
-}
-
 // ─── User ─────────────────────────────────────────────────────────────────────
 
 /** Maps to UserStatus.java */
