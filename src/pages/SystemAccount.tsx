@@ -55,7 +55,8 @@ export function SystemAccount() {
         setEntries(entriesArray);
       } else if (entriesArray && typeof entriesArray === 'object' && 'content' in entriesArray) {
         // Handle Spring Page object
-        setEntries(Array.isArray(entriesArray.content) ? entriesArray.content : []);
+        const pageData = entriesArray as { content: SystemAccountEntryResponse[] };
+        setEntries(Array.isArray(pageData.content) ? pageData.content : []);
       } else {
         console.warn('Entries data is not an array or Page object:', entriesArray);
         setEntries([]);

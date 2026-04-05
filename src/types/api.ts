@@ -219,6 +219,9 @@ export interface PaymentResponse {
   merchantCode: string;
   operatorCode: string;
   payerPhone: string;
+  payerFullName?: string;
+  recipientPhone?: string;
+  recipientName?: string;
   amount: number;
   feeAmount: number;
   netAmount: number;
@@ -226,8 +229,11 @@ export interface PaymentResponse {
   status: PaymentStatus;
   operatorTransactionId: string | null;
   paymentUrl: string | null;
+  description?: string;
+  idempotencyKey?: string;
   expiresAt: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 // ─── User ─────────────────────────────────────────────────────────────────────

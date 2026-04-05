@@ -37,24 +37,22 @@ export function LedgerStatsSection({ entries, currency }: LedgerStatsSectionProp
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <StatsCard
         icon={TrendingUp}
-        iconColor="text-secondary"
+        iconColor="secondary"
         label={t('ledger.stats.totalCredits')}
         value={`${formatAmount(totalCredits)} ${currency}`}
-        trend="+15.2%"
       />
       <StatsCard
         icon={TrendingDown}
-        iconColor="text-error"
+        iconColor="error"
         label={t('ledger.stats.totalDebits')}
         value={`${formatAmount(totalDebits)} ${currency}`}
-        trend="-8.1%"
       />
       <StatsCard
         icon={Receipt}
-        iconColor="text-primary"
+        iconColor="primary"
         label={t('ledger.stats.totalEntries')}
         value={totalEntries.toString()}
-        sublabel={t('ledger.stats.currentPage')}
+        desc={t('ledger.stats.currentPage')}
       />
     </div>
   );

@@ -1,4 +1,5 @@
 export { Button } from './Button';
+export { ConfirmDialog } from './ConfirmDialog';
 export { IconButton } from './IconButton';
 export { Modal } from './Modal';
 export { PageHeader } from './PageHeader';
@@ -7,3 +8,4 @@ export { StatusBadge } from './StatusBadge';
 export type { StatusType } from './StatusBadge';
 export { StatsCard } from './StatsCard';
 export { Pagination } from './Pagination';
+export { Toast } from './Toast';

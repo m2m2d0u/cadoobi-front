@@ -79,7 +79,8 @@ export function Parameters() {
       if (Array.isArray(paramsData)) {
         setParameters(paramsData);
       } else if (paramsData && typeof paramsData === 'object' && 'content' in paramsData) {
-        setParameters(Array.isArray(paramsData.content) ? paramsData.content : []);
+        const pageData = paramsData as { content: ParameterResponse[] };
+        setParameters(Array.isArray(pageData.content) ? pageData.content : []);
       } else {
         setParameters([]);
       }

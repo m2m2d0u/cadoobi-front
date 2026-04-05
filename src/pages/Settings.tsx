@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../context/LanguageContext';
-import { Button, Modal, IconButton, StatusBadge } from '../components/ui';
+import { Button, Modal, IconButton, StatusBadge, Toast, ConfirmDialog } from '../components/ui';
 import { PermissionGuard } from '../components/auth';
 import { apiKeysService, webhooksService } from '../services';
 import type {
@@ -203,11 +203,31 @@ function ApiKeysSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingKey, setEditingKey] = useState<ApiKeyResponse | null>(null);
   const [newApiKey, setNewApiKey] = useState<string | null>(null);
-  const [formData, setFormData] = useState<CreateApiKeyRequest>({
+  const [formData, setFormData] = useState<Partial<CreateApiKeyRequest & UpdateApiKeyRequest>>({
     name: '',
     description: '',
     allowedReferrers: [],
     expiresAt: undefined
+  });
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info'; isOpen: boolean }>({
+    message: '',
+    type: 'success',
+    isOpen: false
+  });
+
+  // Confirm dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {}
   });
 
   useEffect(() => {
@@ -231,7 +251,7 @@ function ApiKeysSection() {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const created = await apiKeysService.create(formData);
+      const created = await apiKeysService.create(formData as CreateApiKeyRequest);
       setNewApiKey(created.apiKey || null);
       await fetchApiKeys();
       setFormData({ name: '', description: '', allowedReferrers: [], expiresAt: undefined });
@@ -249,7 +269,7 @@ function ApiKeysSection() {
 
     try {
       setIsLoading(true);
-      await apiKeysService.update(editingKey.id, formData);
+      await apiKeysService.update(editingKey.id, formData as UpdateApiKeyRequest);
       await fetchApiKeys();
       setIsModalOpen(false);
       setEditingKey(null);
@@ -261,22 +281,30 @@ function ApiKeysSection() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm(t('settings.apiKeys.deleteConfirm'))) return;
-
     try {
       setIsLoading(true);
       await apiKeysService.delete(id);
       await fetchApiKeys();
+      setToast({ message: t('settings.apiKeys.deleteSuccess'), type: 'success', isOpen: true });
     } catch (err: any) {
-      setError(err.message || 'Failed to delete API key');
+      setToast({ message: err.message || 'Failed to delete API key', type: 'error', isOpen: true });
     } finally {
       setIsLoading(false);
     }
   };
 
+  const openDeleteConfirm = (id: string, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: t('settings.apiKeys.deleteTitle'),
+      message: t('settings.apiKeys.deleteConfirm').replace('{name}', name),
+      onConfirm: () => handleDelete(id)
+    });
+  };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert(t('settings.apiKeys.copied'));
+    setToast({ message: t('settings.apiKeys.copied'), type: 'success', isOpen: true });
   };
 
   return (
@@ -387,7 +415,7 @@ function ApiKeysSection() {
                     <IconButton
                       icon={Trash2}
                       size="sm"
-                      onClick={() => handleDelete(key.id)}
+                      onClick={() => openDeleteConfirm(key.id, key.name)}
                       className="text-error hover:bg-error/10"
                     />
                   </PermissionGuard>
@@ -488,6 +516,26 @@ function ApiKeysSection() {
           </form>
         </div>
       </Modal>
+
+      {/* Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isOpen={toast.isOpen}
+        onClose={() => setToast({ ...toast, isOpen: false })}
+      />
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmText={t('common.delete')}
+        cancelText={t('common.cancel')}
+        variant="danger"
+      />
     </section>
   );
 }
@@ -500,13 +548,33 @@ function WebhooksSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWebhook, setEditingWebhook] = useState<WebhookConfigurationResponse | null>(null);
   const [newSecret, setNewSecret] = useState<string | null>(null);
-  const [formData, setFormData] = useState<CreateWebhookConfigurationRequest>({
+  const [formData, setFormData] = useState<Partial<CreateWebhookConfigurationRequest & UpdateWebhookConfigurationRequest>>({
     name: '',
     url: '',
     description: '',
     subscribedEvents: [],
     maxRetries: 3,
     timeoutSeconds: 30
+  });
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info'; isOpen: boolean }>({
+    message: '',
+    type: 'success',
+    isOpen: false
+  });
+
+  // Confirm dialog state
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {}
   });
 
   const availableEvents = [
@@ -539,7 +607,7 @@ function WebhooksSection() {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const created = await webhooksService.create(formData);
+      const created = await webhooksService.create(formData as CreateWebhookConfigurationRequest);
       setNewSecret(created.secret || null);
       await fetchWebhooks();
       setFormData({ name: '', url: '', description: '', subscribedEvents: [], maxRetries: 3, timeoutSeconds: 30 });
@@ -557,7 +625,7 @@ function WebhooksSection() {
 
     try {
       setIsLoading(true);
-      await webhooksService.update(editingWebhook.id, formData);
+      await webhooksService.update(editingWebhook.id, formData as UpdateWebhookConfigurationRequest);
       await fetchWebhooks();
       setIsModalOpen(false);
       setEditingWebhook(null);
@@ -569,37 +637,53 @@ function WebhooksSection() {
   };
 
   const handleRegenerateSecret = async (id: string) => {
-    if (!confirm(t('settings.webhooks.regenerateConfirm'))) return;
-
     try {
       setIsLoading(true);
       const result = await webhooksService.regenerateSecret(id);
       setNewSecret(result.secret || null);
       await fetchWebhooks();
+      setToast({ message: t('settings.webhooks.regenerateSuccess'), type: 'success', isOpen: true });
     } catch (err: any) {
-      setError(err.message || 'Failed to regenerate secret');
+      setToast({ message: err.message || 'Failed to regenerate secret', type: 'error', isOpen: true });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm(t('settings.webhooks.deleteConfirm'))) return;
+  const openRegenerateConfirm = (id: string, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: t('settings.webhooks.regenerateTitle'),
+      message: t('settings.webhooks.regenerateConfirm').replace('{name}', name),
+      onConfirm: () => handleRegenerateSecret(id)
+    });
+  };
 
+  const handleDelete = async (id: string) => {
     try {
       setIsLoading(true);
       await webhooksService.delete(id);
       await fetchWebhooks();
+      setToast({ message: t('settings.webhooks.deleteSuccess'), type: 'success', isOpen: true });
     } catch (err: any) {
-      setError(err.message || 'Failed to delete webhook');
+      setToast({ message: err.message || 'Failed to delete webhook', type: 'error', isOpen: true });
     } finally {
       setIsLoading(false);
     }
   };
 
+  const openDeleteConfirm = (id: string, name: string) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: t('settings.webhooks.deleteTitle'),
+      message: t('settings.webhooks.deleteConfirm').replace('{name}', name),
+      onConfirm: () => handleDelete(id)
+    });
+  };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert(t('settings.webhooks.copied'));
+    setToast({ message: t('settings.webhooks.copied'), type: 'success', isOpen: true });
   };
 
   const toggleEvent = (event: string) => {
@@ -698,7 +782,7 @@ function WebhooksSection() {
                       <code className="flex-1 font-mono text-sm">{webhook.maskedSecret}</code>
                       <PermissionGuard permission="webhook:update">
                         <button
-                          onClick={() => handleRegenerateSecret(webhook.id)}
+                          onClick={() => openRegenerateConfirm(webhook.id, webhook.name)}
                           className="text-xs px-3 py-1 bg-secondary/10 text-secondary rounded hover:bg-secondary/20 font-bold"
                         >
                           {t('settings.webhooks.regenerate')}
@@ -740,7 +824,7 @@ function WebhooksSection() {
                     <IconButton
                       icon={Trash2}
                       size="sm"
-                      onClick={() => handleDelete(webhook.id)}
+                      onClick={() => openDeleteConfirm(webhook.id, webhook.name)}
                       className="text-error hover:bg-error/10"
                     />
                   </PermissionGuard>
@@ -888,6 +972,26 @@ function WebhooksSection() {
           </form>
         </div>
       </Modal>
+
+      {/* Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isOpen={toast.isOpen}
+        onClose={() => setToast({ ...toast, isOpen: false })}
+      />
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmText={confirmDialog.title.includes('Delete') ? t('common.delete') : t('settings.webhooks.regenerate')}
+        cancelText={t('common.cancel')}
+        variant="danger"
+      />
     </section>
   );
 }
