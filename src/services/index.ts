@@ -1,3 +1,4 @@
+export { apiKeysService } from './apiKeys.service';
 export { authService } from './auth.service';
 export { ledgerService } from './ledger.service';
 export { merchantsService } from './merchants.service';
@@ -10,5 +11,6 @@ export { reportsService } from './reports.service';
 export { rolesService } from './roles.service';
 export { systemAccountService } from './systemAccount.service';
 export { usersService } from './users.service';
+export { webhooksService } from './webhooks.service';
 
 // We now recommend importing types directly from '../types/api'

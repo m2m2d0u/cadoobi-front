@@ -488,3 +488,77 @@ export interface CreateDefaultMerchantFeeRequest {
   isActive?: boolean;
   effectiveTo?: string;  // ISO-8601 date
 }
+
+// ─── API Keys ─────────────────────────────────────────────────────────────────
+
+/** Maps to CreateApiKeyRequest.java */
+export interface CreateApiKeyRequest {
+  name: string;
+  description?: string;
+  allowedReferrers?: string[];
+  expiresAt?: string;  // ISO-8601
+}
+
+/** Maps to UpdateApiKeyRequest.java */
+export interface UpdateApiKeyRequest {
+  name?: string;
+  description?: string;
+  allowedReferrers?: string[];
+  isActive?: boolean;
+  expiresAt?: string;  // ISO-8601
+}
+
+/** Maps to ApiKeyResponse.java */
+export interface ApiKeyResponse {
+  id: string;
+  apiKey?: string;  // Full key, only shown on creation
+  maskedApiKey: string;  // e.g., 'pk_****...****abcd'
+  name: string;
+  description: string | null;
+  allowedReferrers: string[];
+  isActive: boolean;
+  expiresAt: string | null;  // ISO-8601
+  lastUsedAt: string | null;  // ISO-8601
+  createdAt: string;  // ISO-8601
+  updatedAt: string;  // ISO-8601
+}
+
+// ─── Webhooks ─────────────────────────────────────────────────────────────────
+
+/** Maps to CreateWebhookConfigurationRequest.java */
+export interface CreateWebhookConfigurationRequest {
+  name: string;
+  url: string;
+  description?: string;
+  subscribedEvents?: string[];
+  maxRetries?: number;  // 0-10, default 3
+  timeoutSeconds?: number;  // 5-120, default 30
+}
+
+/** Maps to UpdateWebhookConfigurationRequest.java */
+export interface UpdateWebhookConfigurationRequest {
+  name?: string;
+  url?: string;
+  description?: string;
+  subscribedEvents?: string[];
+  isActive?: boolean;
+  maxRetries?: number;  // 0-10
+  timeoutSeconds?: number;  // 5-120
+}
+
+/** Maps to WebhookConfigurationResponse.java */
+export interface WebhookConfigurationResponse {
+  id: string;
+  name: string;
+  url: string;
+  description: string | null;
+  secret?: string;  // Full secret, only shown on creation/regeneration
+  maskedSecret: string;  // e.g., 'whsec_****...****abcd'
+  subscribedEvents: string[];
+  isActive: boolean;
+  lastTriggeredAt: string | null;  // ISO-8601
+  maxRetries: number;
+  timeoutSeconds: number;
+  createdAt: string;  // ISO-8601
+  updatedAt: string;  // ISO-8601
+}

@@ -59,6 +59,18 @@ export const PARAMETER_CREATE = 'parameter:create';
 export const PARAMETER_UPDATE = 'parameter:update';
 export const PARAMETER_DELETE = 'parameter:delete';
 
+// API Key permissions
+export const API_KEY_READ = 'api-key:read';
+export const API_KEY_CREATE = 'api-key:create';
+export const API_KEY_UPDATE = 'api-key:update';
+export const API_KEY_DELETE = 'api-key:delete';
+
+// Webhook permissions
+export const WEBHOOK_READ = 'webhook:read';
+export const WEBHOOK_CREATE = 'webhook:create';
+export const WEBHOOK_UPDATE = 'webhook:update';
+export const WEBHOOK_DELETE = 'webhook:delete';
+
 // System permissions
 export const SYSTEM_ADMIN = 'system:admin';
 
@@ -79,6 +91,8 @@ export const PermissionGroups = {
   LEDGER: [LEDGER_READ, LEDGER_WRITE],
   SYSTEM_ACCOUNT: [SYSTEM_ACCOUNT_READ, SYSTEM_ACCOUNT_WRITE],
   PARAMETERS: [PARAMETER_READ, PARAMETER_CREATE, PARAMETER_UPDATE, PARAMETER_DELETE],
+  API_KEYS: [API_KEY_READ, API_KEY_CREATE, API_KEY_UPDATE, API_KEY_DELETE],
+  WEBHOOKS: [WEBHOOK_READ, WEBHOOK_CREATE, WEBHOOK_UPDATE, WEBHOOK_DELETE],
   REPORTS: [REPORTS_VIEW],
 };
 
