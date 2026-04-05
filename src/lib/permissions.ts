@@ -35,6 +35,29 @@ export const ROLE_DELETE = 'role:delete';
 
 // Permission permissions
 export const PERMISSION_READ = 'permission:read';
+export const PERMISSION_CREATE = 'permission:create';
+export const PERMISSION_UPDATE = 'permission:update';
+export const PERMISSION_DELETE = 'permission:delete';
+
+// Payout permissions
+export const PAYOUT_CREATE = 'payout:create';
+export const PAYOUT_READ = 'payout:read';
+export const PAYOUT_UPDATE = 'payout:update';
+export const PAYOUT_DELETE = 'payout:delete';
+
+// Ledger permissions
+export const LEDGER_READ = 'ledger:read';
+export const LEDGER_WRITE = 'ledger:write';
+
+// System Account permissions
+export const SYSTEM_ACCOUNT_READ = 'system-account:read';
+export const SYSTEM_ACCOUNT_WRITE = 'system-account:write';
+
+// Parameter permissions
+export const PARAMETER_READ = 'parameter:read';
+export const PARAMETER_CREATE = 'parameter:create';
+export const PARAMETER_UPDATE = 'parameter:update';
+export const PARAMETER_DELETE = 'parameter:delete';
 
 // System permissions
 export const SYSTEM_ADMIN = 'system:admin';
@@ -47,11 +70,15 @@ export const REPORTS_VIEW = 'reports:view';
  */
 export const PermissionGroups = {
   PAYMENTS: [PAYMENT_CREATE, PAYMENT_READ, PAYMENT_UPDATE, PAYMENT_DELETE],
+  PAYOUTS: [PAYOUT_CREATE, PAYOUT_READ, PAYOUT_UPDATE, PAYOUT_DELETE],
   MERCHANTS: [MERCHANT_CREATE, MERCHANT_READ, MERCHANT_UPDATE, MERCHANT_DELETE],
   OPERATORS: [OPERATOR_CREATE, OPERATOR_READ, OPERATOR_UPDATE, OPERATOR_DELETE],
   USERS: [USER_CREATE, USER_READ, USER_UPDATE, USER_DELETE],
   ROLES: [ROLE_CREATE, ROLE_READ, ROLE_UPDATE, ROLE_DELETE],
-  PERMISSIONS: [PERMISSION_READ],
+  PERMISSIONS: [PERMISSION_READ, PERMISSION_CREATE, PERMISSION_UPDATE, PERMISSION_DELETE],
+  LEDGER: [LEDGER_READ, LEDGER_WRITE],
+  SYSTEM_ACCOUNT: [SYSTEM_ACCOUNT_READ, SYSTEM_ACCOUNT_WRITE],
+  PARAMETERS: [PARAMETER_READ, PARAMETER_CREATE, PARAMETER_UPDATE, PARAMETER_DELETE],
   REPORTS: [REPORTS_VIEW],
 };
 
@@ -61,12 +88,15 @@ export const PermissionGroups = {
 export const NavigationPermissions = {
   '/dashboard': [], // Dashboard is accessible to all authenticated users
   '/transactions': [PAYMENT_READ],
+  '/payouts': [PAYOUT_READ], // Payouts require payout read permission
   '/merchants': [MERCHANT_READ],
   '/operators': [OPERATOR_READ],
   '/users': [USER_READ],
   '/roles': [ROLE_READ],
   '/permissions': [PERMISSION_READ],
-  '/ledger-entries': [PAYMENT_READ], // Anyone who can view payments can view ledger
+  '/ledger-entries': [LEDGER_READ], // Ledger entries require ledger read permission
+  '/system-account': [SYSTEM_ACCOUNT_READ], // System account requires system account read permission
+  '/parameters': [PARAMETER_READ], // Parameters require parameter read permission
   '/reports': [REPORTS_VIEW],
   '/settings': [], // Settings accessible to all
 };

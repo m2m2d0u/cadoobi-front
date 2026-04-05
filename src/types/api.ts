@@ -9,6 +9,7 @@ import type {
   OperationType,
   PaymentStatus,
   PayoutStatus,
+  SystemEntryType,
   UserStatus,
 } from './enums';
 
@@ -341,14 +342,39 @@ export interface NotificationResponse {
 
 // ─── Payout ───────────────────────────────────────────────────────────────────
 
+/** Maps to CreatePayoutRequest.java */
+export interface CreatePayoutRequest {
+  merchantId: string;
+  operatorCode: string;
+  recipientNumber: string;
+  amount: number;
+  currency?: string;
+  idempotencyKey: string;
+}
+
+/** Maps to PayoutResponse.java */
 export interface PayoutResponse {
   id: string;
   merchantId: string;
+  operatorCode: string;
+  recipientNumber: string;
+  merchantCode: string;
   amount: number;
+  feeAmount: number;
+  netAmount: number;
+  merchantFeeAmount: number;
   currency: string;
   status: PayoutStatus;
-  operatorCode: string;
-  createdAt: string;
+  idempotencyKey: string;
+  operatorTransactionId: string | null;
+  createdAt: string;   // ISO-8601
+  updatedAt: string;   // ISO-8601
+}
+
+/** Maps to UpdatePayoutStatusRequest (query params) */
+export interface UpdatePayoutStatusRequest {
+  status: PayoutStatus;
+  operatorTransactionId?: string;
 }
 
 // ─── Ledger ───────────────────────────────────────────────────────────────────
@@ -377,4 +403,88 @@ export interface LedgerEntryResponse {
   paymentTransactionId?: string;
   payoutTransactionId?: string;
   createdAt: string;  // ISO-8601
+}
+
+// ─── System Account ───────────────────────────────────────────────────────────
+
+/** Maps to SystemAccountBalanceResponse.java */
+export interface SystemAccountBalanceResponse {
+  accountId: string;
+  currency: string;
+  balance: number;
+  updatedAt: string;  // ISO-8601
+}
+
+/** Maps to SystemAccountEntryResponse.java */
+export interface SystemAccountEntryResponse {
+  id: string;
+  systemAccountId: string;
+  direction: LedgerDirection;
+  entryType: SystemEntryType;
+  amount: number;
+  currency: string;
+  description: string;
+  idempotencyKey: string;
+  payoutTransactionId: string | null;
+  createdAt: string;  // ISO-8601
+}
+
+// ─── Parameters ───────────────────────────────────────────────────────────────
+
+/** Maps to ParameterResponse.java */
+export interface ParameterResponse {
+  id: string;
+  key: string;
+  value: string;
+  category: string;
+  description: string;
+  isActive: boolean;
+  isSystem: boolean;
+  createdAt: string;  // ISO-8601
+  updatedAt: string;  // ISO-8601
+}
+
+/** Maps to CreateParameterRequest.java */
+export interface CreateParameterRequest {
+  key: string;
+  value: string;
+  category?: string;
+  description?: string;
+  isActive?: boolean;
+  isSystem?: boolean;
+}
+
+/** Maps to UpdateParameterRequest.java */
+export interface UpdateParameterRequest {
+  value?: string;
+  category?: string;
+  description?: string;
+  isActive?: boolean;
+}
+
+/** Maps to DefaultMerchantFeeResponse.java */
+export interface DefaultMerchantFeeResponse {
+  id: string;
+  description: string;
+  feeType: FeeType;
+  feePercentage: number;
+  feeFixed: number;
+  minAmount: number;
+  maxAmount: number;
+  currency: string;
+  isActive: boolean;
+  effectiveTo: string | null;  // ISO-8601 date
+}
+
+/** Maps to CreateDefaultMerchantFeeRequest.java */
+export interface CreateDefaultMerchantFeeRequest {
+  description: string;
+  feeType: FeeType;
+  feePercentage?: number;
+  feeFixed?: number;
+  minAmount: number;
+  maxAmount: number;
+  currency: string;
+  isActive?: boolean;
+  effectiveTo?: string;  // ISO-8601 date
 }

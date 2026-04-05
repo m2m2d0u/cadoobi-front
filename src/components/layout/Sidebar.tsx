@@ -2,6 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard,
   CreditCard,
+  Send,
   Store,
   Users,
   BarChart3,
@@ -11,7 +12,9 @@ import {
   ShieldCheck,
   UserCheck,
   TowerControl as Tower,
-  BookOpen
+  BookOpen,
+  Wallet,
+  Settings2
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
@@ -27,12 +30,15 @@ export function Sidebar() {
   const navItems = [
     { icon: LayoutDashboard, label: t('nav.dashboard'), path: '/dashboard' },
     { icon: CreditCard, label: t('nav.transactions'), path: '/transactions' },
+    { icon: Send, label: t('nav.payouts'), path: '/payouts' },
     { icon: Store, label: t('nav.merchants'), path: '/merchants' },
     { icon: Tower, label: t('nav.operators'), path: '/operators' },
     { icon: Users, label: t('nav.users'), path: '/users' },
     { icon: ShieldCheck, label: t('nav.roles'), path: '/roles' },
     { icon: UserCheck, label: t('nav.permissions'), path: '/permissions' },
     { icon: BookOpen, label: t('nav.ledgerEntries'), path: '/ledger-entries' },
+    { icon: Wallet, label: t('nav.systemAccount'), path: '/system-account' },
+    { icon: Settings2, label: t('nav.parameters'), path: '/parameters' },
     { icon: BarChart3, label: t('nav.reports'), path: '/reports' },
     { icon: Settings, label: t('nav.settings'), path: '/settings' },
   ];

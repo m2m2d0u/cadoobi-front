@@ -12,7 +12,7 @@ import {
   PermissionsTable
 } from '../components/permissions';
 import { PermissionGuard } from '../components/auth';
-import { SYSTEM_ADMIN } from '../lib/permissions';
+import { PERMISSION_CREATE, PERMISSION_UPDATE, PERMISSION_DELETE } from '../lib/permissions';
 
 export function Permissions() {
   const { t } = useLanguage();
@@ -127,7 +127,7 @@ export function Permissions() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <PermissionGuard requireAdmin>
+            <PermissionGuard permission={PERMISSION_CREATE}>
               <Button onClick={() => {
                 setEditingId(null);
                 setFormData(initialFormState);

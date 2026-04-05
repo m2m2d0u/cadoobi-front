@@ -5,6 +5,7 @@ import { IconButton, StatusBadge } from '../ui';
 import type { StatusType } from '../ui';
 import type { PermissionResponse } from '../../types/api';
 import { PermissionGuard } from '../auth';
+import { PERMISSION_UPDATE, PERMISSION_DELETE } from '../../lib/permissions';
 
 interface PermissionTableRowProps {
   permission: PermissionResponse;
@@ -31,7 +32,7 @@ export function PermissionTableRow({ permission, onEdit, onDelete }: PermissionT
       </td>
       <td className="px-6 py-4 text-right">
         <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <PermissionGuard requireAdmin>
+          <PermissionGuard permission={PERMISSION_UPDATE}>
             <IconButton
               icon={Edit2}
               size="md"
@@ -39,7 +40,7 @@ export function PermissionTableRow({ permission, onEdit, onDelete }: PermissionT
               onClick={() => onEdit(permission)}
             />
           </PermissionGuard>
-          <PermissionGuard requireAdmin>
+          <PermissionGuard permission={PERMISSION_DELETE}>
             <IconButton
               icon={Trash2}
               size="md"

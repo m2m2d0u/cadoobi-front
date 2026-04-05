@@ -28,6 +28,7 @@ export enum PayoutStatus {
   PENDING   = 'PENDING',
   COMPLETED = 'COMPLETED',
   FAILED    = 'FAILED',
+  PROCESSING    = 'PROCESSING',
 }
 
 // ─── Merchant ─────────────────────────────────────────────────────────────────
@@ -90,5 +91,14 @@ export enum LedgerEntryType {
   PAYOUT_RELEASE      = 'PAYOUT_RELEASE',
   PAYOUT_SETTLEMENT   = 'PAYOUT_SETTLEMENT',
   PAYOUT_FEE          = 'PAYOUT_FEE',
+  MANUAL_ADJUSTMENT   = 'MANUAL_ADJUSTMENT',
+}
+
+// ─── System Account ───────────────────────────────────────────────────────────
+
+/** Maps to SystemEntryType.java */
+export enum SystemEntryType {
+  MERCHANT_FEE_EARNED = 'MERCHANT_FEE_EARNED',
+  WITHDRAWAL          = 'WITHDRAWAL',
   MANUAL_ADJUSTMENT   = 'MANUAL_ADJUSTMENT',
 }

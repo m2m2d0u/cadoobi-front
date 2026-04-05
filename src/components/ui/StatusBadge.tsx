@@ -3,7 +3,7 @@ import { CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
 export type StatusType =
-  | 'Active' | 'Pending' | 'Success' | 'Failed'
+  | 'Active' | 'Pending' | 'Success' | 'Failed' | 'Processing'
   | 'Blocked' | 'Healthy' | 'Degraded' | 'Redeemed' | 'Expired';
 
 interface StatusBadgeProps {
@@ -20,6 +20,7 @@ const config: Record<StatusType, { text: string; dot: string; badge: string }> =
   Healthy:  { text: 'text-secondary',  dot: 'bg-secondary', badge: 'bg-secondary/10 text-secondary' },
   Redeemed: { text: 'text-primary',    dot: 'bg-primary',   badge: 'bg-primary/10 text-primary' },
   Pending:  { text: 'text-amber-600',  dot: 'bg-amber-500', badge: 'bg-amber-500/10 text-amber-600' },
+  Processing:  { text: 'text-amber-600',  dot: 'bg-amber-500', badge: 'bg-amber-500/10 text-amber-600' },
   Failed:   { text: 'text-error',      dot: 'bg-error',     badge: 'bg-error/10 text-error' },
   Blocked:  { text: 'text-error',      dot: 'bg-error',     badge: 'bg-error/10 text-error' },
   Degraded: { text: 'text-error',      dot: 'bg-error',     badge: 'bg-error/10 text-error' },

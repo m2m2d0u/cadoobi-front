@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout';
 import { Dashboard } from './pages/Dashboard';
 import { Transactions } from './pages/Transactions';
+import { Payouts } from './pages/Payouts';
 import { Merchants } from './pages/Merchants';
 import { Operators } from './pages/Operators';
 import { Users } from './pages/Users';
@@ -14,6 +15,8 @@ import { Profile } from './pages/Profile';
 import { MerchantProfile } from './pages/MerchantProfile';
 import { Ledger } from './pages/Ledger';
 import { LedgerEntries } from './pages/LedgerEntries';
+import { SystemAccount } from './pages/SystemAccount';
+import { Parameters } from './pages/Parameters';
 import { Login } from './pages/Login';
 
 function App() {
@@ -25,6 +28,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/payouts" element={<Payouts />} />
           <Route path="/merchants" element={<Merchants />} />
           <Route path="/merchants/:id" element={<MerchantProfile />} />
           <Route path="/merchants/:merchantId/ledger" element={<Ledger />} />
@@ -33,6 +37,8 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/permissions" element={<Permissions />} />
+          <Route path="/system-account" element={<SystemAccount />} />
+          <Route path="/parameters" element={<Parameters />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
