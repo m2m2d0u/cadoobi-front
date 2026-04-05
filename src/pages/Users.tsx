@@ -13,6 +13,8 @@ import {
   UsersTable,
   UsersRBACFooter
 } from '../components/users';
+import { PermissionGuard } from '../components/auth';
+import { USER_CREATE } from '../lib/permissions';
 
 export function Users() {
   const { t } = useLanguage();
@@ -189,10 +191,12 @@ export function Users() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <Button onClick={() => setIsInviteModalOpen(true)}>
-              <UserPlus className="w-4 h-4" />
-              {t('users.invite')}
-            </Button>
+            <PermissionGuard permission={USER_CREATE}>
+              <Button onClick={() => setIsInviteModalOpen(true)}>
+                <UserPlus className="w-4 h-4" />
+                {t('users.invite')}
+              </Button>
+            </PermissionGuard>
           </>
         }
       />

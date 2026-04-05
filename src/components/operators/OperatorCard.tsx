@@ -4,6 +4,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../ui';
 import type { StatusType } from '../ui';
 import type { OperatorResponse } from '../../types/api';
+import { PermissionGuard } from '../auth';
+import { OPERATOR_UPDATE } from '../../lib/permissions';
 
 interface OperatorCardProps {
   operator: OperatorResponse;
@@ -20,13 +22,15 @@ export function OperatorCard({ operator, onManageFees }: OperatorCardProps) {
           {operator.name.charAt(0).toUpperCase()}
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => onManageFees(operator)}
-            className="p-2 hover:bg-surface-container-high rounded-full transition-colors group relative"
-            title={t('operators.fees.manage') || 'Manage Fees'}
-          >
-            <Settings className="w-5 h-5 text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer" />
-          </button>
+          <PermissionGuard permission={OPERATOR_UPDATE}>
+            <button
+              onClick={() => onManageFees(operator)}
+              className="p-2 hover:bg-surface-container-high rounded-full transition-colors group relative"
+              title={t('operators.fees.manage') || 'Manage Fees'}
+            >
+              <Settings className="w-5 h-5 text-on-surface-variant group-hover:text-primary transition-colors cursor-pointer" />
+            </button>
+          </PermissionGuard>
           <StatusBadge
             status={operator.isActive ? 'Healthy' as StatusType : 'Degraded' as StatusType}
             label={operator.isActive ? t('common.active') || 'Active' : t('common.inactive') || 'Inactive'}

@@ -12,6 +12,8 @@ import {
   NetworkLoadCard,
   PerformanceMetrics
 } from '../components/operators';
+import { PermissionGuard } from '../components/auth';
+import { OPERATOR_CREATE } from '../lib/permissions';
 
 export function Operators() {
   const { t } = useLanguage();
@@ -147,10 +149,12 @@ export function Operators() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <Button onClick={() => setIsModalOpen(true)}>
-              <Plus className="w-4 h-4" />
-              {t('operators.create')}
-            </Button>
+            <PermissionGuard permission={OPERATOR_CREATE}>
+              <Button onClick={() => setIsModalOpen(true)}>
+                <Plus className="w-4 h-4" />
+                {t('operators.create')}
+              </Button>
+            </PermissionGuard>
           </>
         }
       />

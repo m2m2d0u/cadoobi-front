@@ -27,6 +27,8 @@ import { merchantsService } from '../services';
 import type { MerchantResponse, CreateMerchantRequest, CompensationAccountDto } from '../types/api';
 import { CompensationAccountType } from '../types/enums';
 import { useNavigate } from 'react-router-dom';
+import { PermissionGuard } from '../components/auth';
+import { MERCHANT_CREATE, MERCHANT_READ, MERCHANT_UPDATE } from '../lib/permissions';
 
 export function Merchants() {
   const { t } = useLanguage();
@@ -144,12 +146,14 @@ export function Merchants() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <Button
-              onClick={() => { setIsRegisterModalOpen(true); setCurrentStep(1); setError(null); }}
-            >
-              <Plus className="w-4 h-4" />
-              {t('merchants.register')}
-            </Button>
+            <PermissionGuard permission={MERCHANT_CREATE}>
+              <Button
+                onClick={() => { setIsRegisterModalOpen(true); setCurrentStep(1); setError(null); }}
+              >
+                <Plus className="w-4 h-4" />
+                {t('merchants.register')}
+              </Button>
+            </PermissionGuard>
           </div>
         }
       />
@@ -507,9 +511,11 @@ export function Merchants() {
                         </span>
                       </div>
                     </div>
-                    <button className="p-2 hover:bg-surface-container-high rounded-full transition-colors">
-                      <MoreVertical className="w-5 h-5 text-on-surface-variant" />
-                    </button>
+                    <PermissionGuard permission={MERCHANT_UPDATE}>
+                      <button className="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+                        <MoreVertical className="w-5 h-5 text-on-surface-variant" />
+                      </button>
+                    </PermissionGuard>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-6">
@@ -538,7 +544,9 @@ export function Merchants() {
                       label={t(`common.${m.status.toLowerCase()}`) || m.status}
                       variant="icon"
                     />
-                    <button onClick={() => navigate(`/merchants/${m.id}`)} className="text-xs font-bold text-primary hover:underline hover:text-secondary transition-colors">{t('merchants.card.viewProfile')}</button>
+                    <PermissionGuard permission={MERCHANT_READ}>
+                      <button onClick={() => navigate(`/merchants/${m.id}`)} className="text-xs font-bold text-primary hover:underline hover:text-secondary transition-colors">{t('merchants.card.viewProfile')}</button>
+                    </PermissionGuard>
                   </div>
                 </div>
               ))}

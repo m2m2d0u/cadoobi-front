@@ -4,6 +4,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { IconButton, StatusBadge } from '../ui';
 import type { StatusType } from '../ui';
 import type { RoleResponse } from '../../types/api';
+import { PermissionGuard } from '../auth';
+import { ROLE_UPDATE, ROLE_DELETE } from '../../lib/permissions';
 
 interface RoleTableRowProps {
   role: RoleResponse;
@@ -43,19 +45,23 @@ export function RoleTableRow({ role, onEdit, onDelete }: RoleTableRowProps) {
       </td>
       <td className="px-6 py-4 text-right">
         <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <IconButton
-            icon={Edit2}
-            size="md"
-            className="rounded-full bg-surface-container-low hover:bg-surface-container-high"
-            onClick={() => onEdit(role)}
-          />
-          {!role.isSystemRole && (
+          <PermissionGuard permission={ROLE_UPDATE}>
             <IconButton
-              icon={Trash2}
+              icon={Edit2}
               size="md"
-              className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error"
-              onClick={() => onDelete(role.id)}
+              className="rounded-full bg-surface-container-low hover:bg-surface-container-high"
+              onClick={() => onEdit(role)}
             />
+          </PermissionGuard>
+          {!role.isSystemRole && (
+            <PermissionGuard permission={ROLE_DELETE}>
+              <IconButton
+                icon={Trash2}
+                size="md"
+                className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error"
+                onClick={() => onDelete(role.id)}
+              />
+            </PermissionGuard>
           )}
         </div>
       </td>

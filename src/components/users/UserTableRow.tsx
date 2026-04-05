@@ -3,6 +3,8 @@ import { Mail, Shield, RefreshCw, Lock, Edit2 } from 'lucide-react';
 import { IconButton, StatusBadge } from '../ui';
 import type { StatusType } from '../ui';
 import type { UserResponse } from '../../types/api';
+import { PermissionGuard } from '../auth';
+import { USER_UPDATE } from '../../lib/permissions';
 
 interface UserTableRowProps {
   user: UserResponse;
@@ -59,27 +61,33 @@ export function UserTableRow({ user, onResetAuth, onSuspend, onActivate, onEdit 
       </td>
       <td className="px-6 py-4 text-right">
         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <IconButton
-            icon={RefreshCw}
-            size="md"
-            className="rounded-full bg-surface-container-low hover:bg-surface-container-high"
-            title="Reset Failed Logins"
-            onClick={() => onResetAuth(user.id)}
-          />
-          <IconButton
-            icon={Lock}
-            size="md"
-            className={`rounded-full ${user.status === 'ACTIVE' ? 'bg-error/5 text-error hover:bg-error/20 hover:text-error' : 'bg-primary/5 text-primary hover:bg-primary/20 hover:text-primary'} transition-colors`}
-            title={user.status === 'ACTIVE' ? 'Suspend Account' : 'Activate Account'}
-            onClick={() => user.status === 'ACTIVE' ? onSuspend(user) : onActivate(user.id)}
-          />
-          <IconButton
-            icon={Edit2}
-            size="md"
-            className="rounded-full hover:bg-outline-variant/10 text-on-surface-variant"
-            title="Edit User"
-            onClick={() => onEdit(user)}
-          />
+          <PermissionGuard permission={USER_UPDATE}>
+            <IconButton
+              icon={RefreshCw}
+              size="md"
+              className="rounded-full bg-surface-container-low hover:bg-surface-container-high"
+              title="Reset Failed Logins"
+              onClick={() => onResetAuth(user.id)}
+            />
+          </PermissionGuard>
+          <PermissionGuard permission={USER_UPDATE}>
+            <IconButton
+              icon={Lock}
+              size="md"
+              className={`rounded-full ${user.status === 'ACTIVE' ? 'bg-error/5 text-error hover:bg-error/20 hover:text-error' : 'bg-primary/5 text-primary hover:bg-primary/20 hover:text-primary'} transition-colors`}
+              title={user.status === 'ACTIVE' ? 'Suspend Account' : 'Activate Account'}
+              onClick={() => user.status === 'ACTIVE' ? onSuspend(user) : onActivate(user.id)}
+            />
+          </PermissionGuard>
+          <PermissionGuard permission={USER_UPDATE}>
+            <IconButton
+              icon={Edit2}
+              size="md"
+              className="rounded-full hover:bg-outline-variant/10 text-on-surface-variant"
+              title="Edit User"
+              onClick={() => onEdit(user)}
+            />
+          </PermissionGuard>
         </div>
       </td>
     </tr>

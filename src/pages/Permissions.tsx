@@ -11,6 +11,8 @@ import {
   PermissionsTableFilters,
   PermissionsTable
 } from '../components/permissions';
+import { PermissionGuard } from '../components/auth';
+import { SYSTEM_ADMIN } from '../lib/permissions';
 
 export function Permissions() {
   const { t } = useLanguage();
@@ -125,14 +127,16 @@ export function Permissions() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <Button onClick={() => {
-              setEditingId(null);
-              setFormData(initialFormState);
-              setIsModalOpen(true);
-            }}>
-              <Plus className="w-4 h-4" />
-              {t('permissions.create')}
-            </Button>
+            <PermissionGuard requireAdmin>
+              <Button onClick={() => {
+                setEditingId(null);
+                setFormData(initialFormState);
+                setIsModalOpen(true);
+              }}>
+                <Plus className="w-4 h-4" />
+                {t('permissions.create')}
+              </Button>
+            </PermissionGuard>
           </div>
         }
       />

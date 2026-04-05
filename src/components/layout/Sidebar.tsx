@@ -16,10 +16,13 @@ import {
 import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
 import { useLanguage } from '../../context/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
+import { canAccessRoute } from '../../lib/permissions';
 
 export function Sidebar() {
   const { t } = useLanguage();
   const location = useLocation();
+  const { permissions } = useAuth();
 
   const navItems = [
     { icon: LayoutDashboard, label: t('nav.dashboard'), path: '/dashboard' },
@@ -34,6 +37,9 @@ export function Sidebar() {
     { icon: Settings, label: t('nav.settings'), path: '/settings' },
   ];
 
+  // Filter nav items based on permissions
+  const filteredNavItems = navItems.filter(item => canAccessRoute(item.path, permissions));
+
   return (
     <aside className="w-64 h-screen fixed left-0 top-0 overflow-y-auto bg-surface-container-highest/30 flex flex-col py-6 pl-4 border-r border-outline-variant/10 z-50">
       <div className="mb-8 pr-4">
@@ -45,7 +51,7 @@ export function Sidebar() {
       </div>
 
       <nav className="flex-1 space-y-1 pr-4">
-        {navItems.map((item) => (
+        {filteredNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}

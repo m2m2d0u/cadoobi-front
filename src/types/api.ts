@@ -217,6 +217,7 @@ export interface PaymentResponse {
   merchantId: string;
   merchantCode: string;
   operatorCode: string;
+  payerPhone: string;
   amount: number;
   feeAmount: number;
   netAmount: number;

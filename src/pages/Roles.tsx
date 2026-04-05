@@ -11,6 +11,8 @@ import {
   RolesTableFilters,
   RolesTable
 } from '../components/roles';
+import { PermissionGuard } from '../components/auth';
+import { ROLE_CREATE } from '../lib/permissions';
 
 export function Roles() {
   const { t } = useLanguage();
@@ -140,14 +142,16 @@ export function Roles() {
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               {t('common.refresh')}
             </Button>
-            <Button onClick={() => {
-              setEditingId(null);
-              setFormData(initialFormState);
-              setIsModalOpen(true);
-            }}>
-              <Plus className="w-4 h-4" />
-              {t('roles.create')}
-            </Button>
+            <PermissionGuard permission={ROLE_CREATE}>
+              <Button onClick={() => {
+                setEditingId(null);
+                setFormData(initialFormState);
+                setIsModalOpen(true);
+              }}>
+                <Plus className="w-4 h-4" />
+                {t('roles.create')}
+              </Button>
+            </PermissionGuard>
           </div>
         }
       />

@@ -4,6 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { IconButton, StatusBadge } from '../ui';
 import type { StatusType } from '../ui';
 import type { PermissionResponse } from '../../types/api';
+import { PermissionGuard } from '../auth';
 
 interface PermissionTableRowProps {
   permission: PermissionResponse;
@@ -30,18 +31,22 @@ export function PermissionTableRow({ permission, onEdit, onDelete }: PermissionT
       </td>
       <td className="px-6 py-4 text-right">
         <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <IconButton
-            icon={Edit2}
-            size="md"
-            className="rounded-full bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-primary"
-            onClick={() => onEdit(permission)}
-          />
-          <IconButton
-            icon={Trash2}
-            size="md"
-            className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error"
-            onClick={() => onDelete(permission.id)}
-          />
+          <PermissionGuard requireAdmin>
+            <IconButton
+              icon={Edit2}
+              size="md"
+              className="rounded-full bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-primary"
+              onClick={() => onEdit(permission)}
+            />
+          </PermissionGuard>
+          <PermissionGuard requireAdmin>
+            <IconButton
+              icon={Trash2}
+              size="md"
+              className="rounded-full text-error bg-surface-container-low hover:bg-error/10 hover:text-error"
+              onClick={() => onDelete(permission.id)}
+            />
+          </PermissionGuard>
         </div>
       </td>
     </tr>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/auth.service';
+import { useAuth } from '../context/AuthContext';
 import { LoginBrandSection, LoginFormSection } from '../components/auth';
 
 export function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,9 +16,7 @@ export function Login() {
     setLoading(true);
     setError(null);
     try {
-      const authData = await authService.login({ email, password });
-      localStorage.setItem('access_token', authData.token);
-      localStorage.setItem('refresh_token', authData.refreshToken);
+      await login(email, password);
       navigate('/dashboard');
     } catch (err: any) {
       setError(err?.message || 'Login failed. Please check your credentials.');
