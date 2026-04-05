@@ -1,4 +1,5 @@
 export { authService } from './auth.service';
+export { ledgerService } from './ledger.service';
 export { merchantsService } from './merchants.service';
 export { operatorsService } from './operators.service';
 export { paymentsService } from './payments.service';

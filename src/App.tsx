@@ -12,6 +12,8 @@ import { Reports } from './pages/Reports';
 import { Settings } from './pages/Settings';
 import { Profile } from './pages/Profile';
 import { MerchantProfile } from './pages/MerchantProfile';
+import { Ledger } from './pages/Ledger';
+import { LedgerEntries } from './pages/LedgerEntries';
 import { Login } from './pages/Login';
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/merchants" element={<Merchants />} />
           <Route path="/merchants/:id" element={<MerchantProfile />} />
+          <Route path="/merchants/:merchantId/ledger" element={<Ledger />} />
+          <Route path="/ledger-entries" element={<LedgerEntries />} />
           <Route path="/operators" element={<Operators />} />
           <Route path="/users" element={<Users />} />
           <Route path="/roles" element={<Roles />} />
@@ -32,7 +36,7 @@ function App() {
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
-          
+
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
         

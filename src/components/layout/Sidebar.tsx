@@ -1,16 +1,17 @@
 import React from 'react';
-import { 
-  LayoutDashboard, 
-  CreditCard, 
-  Store, 
+import {
+  LayoutDashboard,
+  CreditCard,
+  Store,
   Users,
-  BarChart3, 
-  Settings, 
-  HelpCircle, 
+  BarChart3,
+  Settings,
+  HelpCircle,
   LogOut,
   ShieldCheck,
   UserCheck,
-  TowerControl as Tower
+  TowerControl as Tower,
+  BookOpen
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
@@ -28,6 +29,7 @@ export function Sidebar() {
     { icon: Users, label: t('nav.users'), path: '/users' },
     { icon: ShieldCheck, label: t('nav.roles'), path: '/roles' },
     { icon: UserCheck, label: t('nav.permissions'), path: '/permissions' },
+    { icon: BookOpen, label: t('nav.ledgerEntries'), path: '/ledger-entries' },
     { icon: BarChart3, label: t('nav.reports'), path: '/reports' },
     { icon: Settings, label: t('nav.settings'), path: '/settings' },
   ];

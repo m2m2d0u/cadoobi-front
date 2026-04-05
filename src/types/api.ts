@@ -1,6 +1,8 @@
 import type {
   CompensationAccountType,
   FeeType,
+  LedgerDirection,
+  LedgerEntryType,
   MerchantStatus,
   NotificationEventType,
   NotificationStatus,
@@ -346,4 +348,32 @@ export interface PayoutResponse {
   status: PayoutStatus;
   operatorCode: string;
   createdAt: string;
+}
+
+// ─── Ledger ───────────────────────────────────────────────────────────────────
+
+/** Maps to MerchantBalanceResponse.java */
+export interface MerchantBalanceResponse {
+  accountId: string;
+  merchantId: string;
+  currency: string;
+  balance: number;
+  lockedBalance: number;
+  availableBalance: number;
+  updatedAt: string;  // ISO-8601
+}
+
+/** Maps to LedgerEntryResponse.java */
+export interface LedgerEntryResponse {
+  id: string;
+  merchantAccountId: string;
+  direction: LedgerDirection;
+  entryType: LedgerEntryType;
+  amount: number;
+  currency: string;
+  description: string;
+  idempotencyKey: string;
+  paymentTransactionId?: string;
+  payoutTransactionId?: string;
+  createdAt: string;  // ISO-8601
 }

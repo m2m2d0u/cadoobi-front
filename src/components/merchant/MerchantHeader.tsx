@@ -1,15 +1,16 @@
 import React from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Wallet } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import { PageHeader } from '../ui';
+import { PageHeader, Button } from '../ui';
 
 interface MerchantHeaderProps {
+  merchantId: string;
   merchantName: string;
   merchantCode: string;
 }
 
-export function MerchantHeader({ merchantName, merchantCode }: MerchantHeaderProps) {
+export function MerchantHeader({ merchantId, merchantName, merchantCode }: MerchantHeaderProps) {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -28,6 +29,13 @@ export function MerchantHeader({ merchantName, merchantCode }: MerchantHeaderPro
           customMargin="mb-0"
         />
       </div>
+      <Button
+        variant="outline"
+        onClick={() => navigate(`/merchants/${merchantId}/ledger`)}
+      >
+        <Wallet className="w-4 h-4" />
+        {t('merchantProfile.viewLedger')}
+      </Button>
     </div>
   );
 }

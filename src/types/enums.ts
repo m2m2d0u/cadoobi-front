@@ -74,3 +74,21 @@ export enum NotificationEventType {
   CASHIN_COMPLETED   = 'CASHIN_COMPLETED',
   CARD_EXPIRED       = 'CARD_EXPIRED',
 }
+
+// ─── Ledger ───────────────────────────────────────────────────────────────────
+
+/** Maps to LedgerDirection.java */
+export enum LedgerDirection {
+  CREDIT = 'CREDIT',
+  DEBIT  = 'DEBIT',
+}
+
+/** Maps to LedgerEntryType.java */
+export enum LedgerEntryType {
+  PAYIN_SETTLEMENT    = 'PAYIN_SETTLEMENT',
+  PAYOUT_LOCK         = 'PAYOUT_LOCK',
+  PAYOUT_RELEASE      = 'PAYOUT_RELEASE',
+  PAYOUT_SETTLEMENT   = 'PAYOUT_SETTLEMENT',
+  PAYOUT_FEE          = 'PAYOUT_FEE',
+  MANUAL_ADJUSTMENT   = 'MANUAL_ADJUSTMENT',
+}

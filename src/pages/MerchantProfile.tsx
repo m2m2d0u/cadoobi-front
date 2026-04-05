@@ -172,7 +172,7 @@ export function MerchantProfile() {
       )}
 
       {/* Header */}
-      <MerchantHeader merchantName={merchant.name} merchantCode={merchant.code} />
+      <MerchantHeader merchantId={merchant.id} merchantName={merchant.name} merchantCode={merchant.code} />
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
