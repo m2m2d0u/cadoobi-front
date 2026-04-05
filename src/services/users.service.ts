@@ -9,7 +9,7 @@ import type {
 import type { UserStatus } from '../types/enums';
 
 export const usersService = {
-  list: (params?: { status?: UserStatus; page?: number; size?: number; sort?: string }) =>
+  list: (params?: { status?: UserStatus; page?: number; size?: number; sort?: string; search?: string }) =>
     api.get<ApiResponse<UserResponse[]>>('/users', { params }).then((r) => r.data),
 
   getById: (id: string) =>

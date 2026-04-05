@@ -28,6 +28,9 @@ export function Users() {
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   // Action state
@@ -54,7 +57,7 @@ export function Users() {
       setIsLoading(true);
       setError(null);
       const [usersData, rolesData] = await Promise.all([
-        usersService.list({ page: currentPage, size: pageSize }),
+        usersService.list({ page: currentPage, size: pageSize, search: searchQuery }),
         rolesService.list({ activeOnly: true, size: 500 })
       ]);
 
@@ -166,6 +169,15 @@ export function Users() {
     }
   };
 
+  // Client-side filtering by name, email, or role
+  const filteredUsers = users.filter(user => {
+    const query = searchQuery.toLowerCase();
+    const matchesName = user.fullName?.toLowerCase().includes(query);
+    const matchesEmail = user.email?.toLowerCase().includes(query);
+    const matchesRole = user.roles.some(role => role.name.toLowerCase().includes(query));
+    return matchesName || matchesEmail || matchesRole;
+  });
+
   return (
     <div className="max-w-7xl mx-auto">
       <PageHeader
@@ -223,7 +235,11 @@ export function Users() {
 
       <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/10 overflow-hidden shadow-sm">
         {/* Filters */}
-        <UsersTableFilters roles={roles} />
+        <UsersTableFilters
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          roles={roles}
+        />
 
         {/* Error Display */}
         {error && !isInviteModalOpen && !userToSuspend && !userToEdit && (
@@ -243,7 +259,7 @@ export function Users() {
 
         {/* Table */}
         <UsersTable
-          users={users}
+          users={filteredUsers}
           isLoading={isLoading}
           isActionLoading={isActionLoading}
           onResetAuth={handleResetAuth}

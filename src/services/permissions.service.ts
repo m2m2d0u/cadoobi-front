@@ -6,7 +6,7 @@ import type {
 } from '../types/api';
 
 export const permissionsService = {
-  list: (params?: { activeOnly?: boolean; page?: number; size?: number; sort?: string }) =>
+  list: (params?: { activeOnly?: boolean; page?: number; size?: number; sort?: string; search?: string }) =>
     api.get<ApiResponse<PermissionResponse[]>>('/permissions', { params }).then((r) => r.data),
 
   getById: (id: string) =>

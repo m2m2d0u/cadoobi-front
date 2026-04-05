@@ -43,7 +43,7 @@ export function Permissions() {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await permissionsService.list({ page: currentPage, size: pageSize });
+      const data = await permissionsService.list({ page: currentPage, size: pageSize, search: searchQuery });
       setPermissions(data?.data || []);
       setTotalElements(data?.pagination?.totalElements || 0);
       setTotalPages(data?.pagination?.totalPages || 0);

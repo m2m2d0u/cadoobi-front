@@ -44,7 +44,7 @@ export function Roles() {
       setIsLoading(true);
       setError(null);
       const [rRes, pRes] = await Promise.all([
-        rolesService.list({ page: currentPage, size: pageSize }),
+        rolesService.list({ page: currentPage, size: pageSize, search: searchQuery }),
         permissionsService.list({ size: 500 })
       ]);
 
